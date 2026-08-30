@@ -180,17 +180,19 @@ body.janken-page {
 
 .hands {
   display: grid;
-  gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
   flex-shrink: 0;
 }
 
 .hand-btn {
-  min-height: 80px;
+  min-height: 88px;
+  padding: 8px 4px;
   border: 2px solid var(--line);
   border-radius: 16px;
   background: var(--card);
   color: var(--ink);
-  font-size: clamp(1.8rem, 8vw, 2.4rem);
+  font-size: clamp(1.15rem, 4.8vw, 1.8rem);
   font-weight: 800;
   box-shadow: var(--shadow);
   cursor: pointer;
