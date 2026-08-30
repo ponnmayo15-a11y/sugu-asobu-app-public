@@ -2,6 +2,45 @@ body.prize-page {
   min-height: 100dvh;
 }
 
+.screen[hidden] {
+  display: none !important;
+}
+
+.field {
+  margin: 0 0 20px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.field-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  gap: 8px;
+  align-items: center;
+}
+
+.stepper .btn {
+  min-width: 64px;
+  font-size: 1.6rem;
+}
+
+.stepper output {
+  display: block;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
 .notice {
   margin: 0 0 20px;
   padding: 12px 14px;
@@ -37,7 +76,7 @@ body.prize-page {
 }
 
 .board-scroll {
-  overflow: hidden;
+  overflow: auto;
   width: 100%;
   max-width: 100%;
   margin: 0 0 16px;
@@ -47,11 +86,19 @@ body.prize-page {
 .logic-grid {
   display: grid;
   gap: 0;
-  width: 100%;
-  max-width: 100%;
   margin: 0 auto;
   border: 3px solid #1c140e;
   background: #fff;
+}
+
+.logic-grid.is-5 {
+  width: max-content;
+}
+
+.logic-grid.is-8 {
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .logic-corner,
@@ -64,10 +111,14 @@ body.prize-page {
 }
 
 .logic-corner {
-  min-width: 32px;
+  min-width: 56px;
   background: #f3eadc;
   border-right: 3px solid #1c140e;
   border-bottom: 3px solid #1c140e;
+}
+
+.logic-grid.is-8 .logic-corner {
+  min-width: 32px;
 }
 
 .logic-clue-col,
@@ -78,7 +129,7 @@ body.prize-page {
   gap: 2px;
   background: #f3eadc;
   color: #5a4a3e;
-  font-size: clamp(0.7rem, 2.8vw, 1rem);
+  font-size: 1rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
@@ -92,21 +143,38 @@ body.prize-page {
 }
 
 .logic-clue-row {
-  min-width: 32px;
-  min-height: 0;
-  padding: 0 6px;
+  min-width: 56px;
+  height: 48px;
+  padding: 0 8px;
   border-right: 3px solid #1c140e;
 }
 
 .logic-cell {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.logic-grid.is-8 .logic-clue-col,
+.logic-grid.is-8 .logic-clue-row {
+  font-size: clamp(0.7rem, 2.8vw, 1rem);
+}
+
+.logic-grid.is-8 .logic-clue-row {
+  min-width: 32px;
+  height: auto;
+  min-height: 0;
+  padding: 0 6px;
+}
+
+.logic-grid.is-8 .logic-cell {
   width: auto;
   min-width: 0;
   min-height: 0;
   height: auto;
   aspect-ratio: 1;
-  padding: 0;
-  background: #fff;
-  cursor: pointer;
 }
 
 .logic-cell.is-fill {
@@ -116,8 +184,12 @@ body.prize-page {
 .logic-cell.is-x {
   background: #e8f6fc;
   color: var(--muted-ink);
-  font-size: clamp(0.9rem, 4vw, 1.4rem);
+  font-size: 1.4rem;
   font-weight: 700;
+}
+
+.logic-grid.is-8 .logic-cell.is-x {
+  font-size: clamp(0.9rem, 4vw, 1.4rem);
 }
 
 .done-box {
@@ -144,4 +216,8 @@ body.prize-page {
   display: grid;
   gap: 10px;
   margin-bottom: 12px;
+}
+
+#logic-setup {
+  margin-bottom: 16px;
 }

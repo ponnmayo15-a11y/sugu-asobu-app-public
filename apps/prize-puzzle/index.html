@@ -18,8 +18,26 @@
     <link rel="stylesheet" href="css/puzzle.css" />
   </head>
   <body class="prize-page">
-    <section id="screen-logic" class="screen wrap">
+    <section id="screen-setup" class="screen wrap">
       <a class="back" href="../../index.html">← 玄関にもどる</a>
+      <p class="site-name">懸賞パズル</p>
+      <h1>せってい</h1>
+      <p class="notice">練習用。賞品はありません。</p>
+      <p class="lead">難易度を決めてから、はじめてください。</p>
+      <div class="field">
+        <label>難易度</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" id="level-minus">−</button>
+          <output id="out-level">やさしい（5×5）</output>
+          <button type="button" class="btn btn-ghost" id="level-plus">＋</button>
+        </div>
+        <p class="field-note">やさしい・ふつうは5×5。むずかしいは8×8です。</p>
+      </div>
+      <button type="button" class="btn btn-wide" id="setup-start">はじめる</button>
+    </section>
+
+    <section id="screen-logic" class="screen wrap" hidden>
+      <button type="button" class="btn btn-ghost" id="logic-setup">← せっていにもどる</button>
       <p class="site-name">懸賞パズル</p>
       <p class="notice">練習用。賞品はありません。</p>
       <div class="play-head">

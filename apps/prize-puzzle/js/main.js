@@ -1,49 +1,117 @@
+const LEVELS = [
+  {
+    id: "easy",
+    label: "やさしい（5×5）",
+    pick: (p) => p.answer.length === 5 && p.level === "やさしい",
+  },
+  {
+    id: "normal",
+    label: "ふつう（5×5）",
+    pick: (p) => p.answer.length === 5 && p.level === "ふつう",
+  },
+  {
+    id: "hard",
+    label: "むずかしい（8×8）",
+    pick: (p) => p.answer.length === 8,
+  },
+];
+
 const play = {
-  logicIndex: 0,
+  levelIndex: 0,
+  poolIndex: 0,
   logicState: [],
   logicDone: false,
 };
 
-// 今の問題
-function currentLogic() {
-  return LOGIC_PUZZLES[play.logicIndex];
+const screens = {
+  setup: document.getElementById("screen-setup"),
+  logic: document.getElementById("screen-logic"),
+};
+
+// 画面を1つだけ出す
+function showScreen(name) {
+  screens.setup.hidden = name !== "setup";
+  screens.logic.hidden = name !== "logic";
 }
 
-// 最後に開いた問題番号を覚える
-function rememberIndex(index) {
+// 今の難易度
+function currentLevel() {
+  return LEVELS[play.levelIndex];
+}
+
+// 今の難易度の問題一覧
+function currentPool() {
+  return LOGIC_PUZZLES.filter(currentLevel().pick);
+}
+
+// 今の問題
+function currentLogic() {
+  const pool = currentPool();
+  return pool[play.poolIndex] || pool[0];
+}
+
+// せっていを覚える
+function saveSetup() {
   const data = loadPrize();
-  data.logicIndex = index;
+  data.levelId = currentLevel().id;
   savePrize(data);
 }
 
-// 覚えた問題番号を読む
-function rememberedIndex() {
+// せっていを読む
+function loadSetup() {
   const data = loadPrize();
-  const i = data.logicIndex;
-  if (Number.isInteger(i) && i >= 0 && i < LOGIC_PUZZLES.length) return i;
-  return 0;
+  const i = LEVELS.findIndex((lv) => lv.id === data.levelId);
+  play.levelIndex = i >= 0 ? i : 0;
 }
+
+// 難易度の表示を更新
+function renderSetup() {
+  document.getElementById("out-level").textContent = currentLevel().label;
+}
+
+document.getElementById("level-minus").addEventListener("click", () => {
+  play.levelIndex = (play.levelIndex + LEVELS.length - 1) % LEVELS.length;
+  saveSetup();
+  renderSetup();
+});
+
+document.getElementById("level-plus").addEventListener("click", () => {
+  play.levelIndex = (play.levelIndex + 1) % LEVELS.length;
+  saveSetup();
+  renderSetup();
+});
+
+document.getElementById("setup-start").addEventListener("click", () => {
+  play.poolIndex = 0;
+  openLogic();
+});
+
+document.getElementById("logic-setup").addEventListener("click", () => {
+  showScreen("setup");
+});
 
 document.getElementById("logic-reset").addEventListener("click", resetLogic);
 document.getElementById("logic-check").addEventListener("click", checkLogic);
 document.getElementById("logic-next").addEventListener("click", () => {
-  play.logicIndex = (play.logicIndex + 1) % LOGIC_PUZZLES.length;
+  const n = currentPool().length;
+  play.poolIndex = (play.poolIndex + 1) % n;
   openLogic();
 });
 
 // イラストロジックを開く
 function openLogic() {
   const puzzle = currentLogic();
+  if (!puzzle) return;
   const saved = loadPlay("logic", puzzle.id);
   const h = puzzle.answer.length;
   const w = puzzle.answer[0].length;
   play.logicState = saved && saved.state ? saved.state : emptyLogicState(h, w);
   play.logicDone = !!(saved && saved.cleared);
-  rememberIndex(play.logicIndex);
   document.getElementById("logic-meta").textContent =
     `${puzzle.level}　${w}×${h}　${puzzle.name}`;
   document.getElementById("logic-check-msg").textContent = "";
   renderLogic();
+  showScreen("logic");
 }
 
 // 盤を描く
@@ -53,7 +121,12 @@ function renderLogic() {
   const board = document.getElementById("logic-board");
   const h = puzzle.answer.length;
   const w = puzzle.answer[0].length;
-  board.style.gridTemplateColumns = `minmax(32px, max-content) repeat(${w}, minmax(0, 1fr))`;
+  const wide = w >= 8;
+  board.classList.toggle("is-5", !wide);
+  board.classList.toggle("is-8", wide);
+  board.style.gridTemplateColumns = wide
+    ? `minmax(32px, max-content) repeat(${w}, minmax(0, 1fr))`
+    : `minmax(56px, auto) repeat(${w}, 48px)`;
   board.innerHTML = "";
   board.appendChild(document.createElement("div")).className = "logic-corner";
   for (let c = 0; c < w; c += 1) {
@@ -143,5 +216,6 @@ function checkLogic() {
     `まだ違います。違うマスは ${n} 個です。`;
 }
 
-play.logicIndex = rememberedIndex();
-openLogic();
+loadSetup();
+renderSetup();
+showScreen("setup");
