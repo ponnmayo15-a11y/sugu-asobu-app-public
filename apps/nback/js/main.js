@@ -546,8 +546,4 @@ function bind() {
 
 paintSettings();
 bind();
-if (!loadStore().seenHow) {
-  showOnly("how");
-} else {
-  showOnly("setup");
-}
+showOnly("setup");
