@@ -41,14 +41,9 @@ body.prize-page {
   font-weight: 700;
 }
 
-.notice {
-  margin: 0 0 20px;
-  padding: 12px 14px;
-  background: #ffffff;
-  color: var(--ink);
-  border: 2px solid var(--line);
-  border-radius: 12px;
-  font-weight: 700;
+.setup-title {
+  margin: 20px 0 12px;
+  font-size: 1.3rem;
 }
 
 .play-head {
@@ -111,14 +106,10 @@ body.prize-page {
 }
 
 .logic-corner {
-  min-width: 56px;
+  min-width: 64px;
   background: #f3eadc;
   border-right: 3px solid #1c140e;
   border-bottom: 3px solid #1c140e;
-}
-
-.logic-grid.is-8 .logic-corner {
-  min-width: 32px;
 }
 
 .logic-clue-col,
@@ -143,9 +134,9 @@ body.prize-page {
 }
 
 .logic-clue-row {
-  min-width: 56px;
+  min-width: 64px;
   height: 48px;
-  padding: 0 8px;
+  padding: 0 10px;
   border-right: 3px solid #1c140e;
 }
 
@@ -163,10 +154,10 @@ body.prize-page {
 }
 
 .logic-grid.is-8 .logic-clue-row {
-  min-width: 32px;
+  min-width: 64px;
   height: auto;
   min-height: 0;
-  padding: 0 6px;
+  padding: 0 10px;
 }
 
 .logic-grid.is-8 .logic-cell {

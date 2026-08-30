@@ -125,8 +125,8 @@ function renderLogic() {
   board.classList.toggle("is-5", !wide);
   board.classList.toggle("is-8", wide);
   board.style.gridTemplateColumns = wide
-    ? `minmax(32px, max-content) repeat(${w}, minmax(0, 1fr))`
-    : `minmax(56px, auto) repeat(${w}, 48px)`;
+    ? `minmax(64px, max-content) repeat(${w}, minmax(0, 1fr))`
+    : `minmax(64px, auto) repeat(${w}, 48px)`;
   board.innerHTML = "";
   board.appendChild(document.createElement("div")).className = "logic-corner";
   for (let c = 0; c < w; c += 1) {
