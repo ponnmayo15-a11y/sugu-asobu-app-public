@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /sugu-asobu-app-public/me.html
+Sitemap: https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/sitemap.xml
