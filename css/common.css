@@ -211,3 +211,29 @@ h1 {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.qr-link {
+  display: inline-block;
+  margin: 0 0 20px;
+  font-weight: 700;
+}
+
+.qr-box {
+  text-align: center;
+}
+
+.qr-img {
+  display: block;
+  width: min(280px, 80vw);
+  height: auto;
+  margin: 0 auto 16px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.qr-url {
+  word-break: break-all;
+  color: var(--muted);
+  font-size: 0.95rem;
+}

@@ -23,3 +23,4 @@
 ### 追記
 - 題名を「すぐ・あそび」に変更（フォルダ名はそのまま）
 - GitHub Pages に公開。このPC不要。住所: https://ponnmayo15-a11y.github.io/sugu-asobu/
+- QRページを追加。https://ponnmayo15-a11y.github.io/sugu-asobu/qr.html

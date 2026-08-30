@@ -12,6 +12,8 @@
 
 https://ponnmayo15-a11y.github.io/sugu-asobu/
 
+QR: https://ponnmayo15-a11y.github.io/sugu-asobu/qr.html
+
 置き場は GitHub Pages。倉庫: https://github.com/ponnmayo15-a11y/sugu-asobu
 
 ## コマンド一覧
