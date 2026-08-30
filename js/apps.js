@@ -70,5 +70,6 @@ const APPS = [
     desc: "N個前と同じなら押す。ばしょだけ／ばしょとおと。",
     href: "apps/nback/index.html",
     ready: true,
+    thumb: "images/thumb-nback.jpg",
   },
 ];
