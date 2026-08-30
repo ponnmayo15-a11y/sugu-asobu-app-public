@@ -92,11 +92,23 @@ document.getElementById("logic-setup").addEventListener("click", () => {
 
 document.getElementById("logic-reset").addEventListener("click", resetLogic);
 document.getElementById("logic-check").addEventListener("click", checkLogic);
-document.getElementById("logic-next").addEventListener("click", () => {
+document.getElementById("logic-next").addEventListener("click", goNextPuzzle);
+
+// つぎの問題。その難易度が終わったら、次の難易度へ
+function goNextPuzzle() {
   const n = currentPool().length;
-  play.poolIndex = (play.poolIndex + 1) % n;
+  if (play.poolIndex + 1 < n) {
+    play.poolIndex += 1;
+  } else if (play.levelIndex + 1 < LEVELS.length) {
+    play.levelIndex += 1;
+    play.poolIndex = 0;
+    saveSetup();
+    renderSetup();
+  } else {
+    play.poolIndex = 0;
+  }
   openLogic();
-});
+}
 
 // イラストロジックを開く
 function openLogic() {
