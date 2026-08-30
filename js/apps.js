@@ -7,6 +7,7 @@ const APPS = [
     desc: "数字がつぎつぎ出る。足し算。",
     href: "apps/flash-anzan/index.html",
     ready: true,
+    thumb: "images/thumb-flash-anzan.jpg",
   },
   {
     id: "nanpure",
@@ -15,6 +16,7 @@ const APPS = [
     desc: "せっていして、マスをうめる。",
     href: "apps/nanpure/index.html",
     ready: true,
+    thumb: "images/thumb-nanpure.jpg",
   },
   {
     id: "crossword",
@@ -23,6 +25,7 @@ const APPS = [
     desc: "タテ・ヨコにことばを入れる。5×5。",
     href: "apps/crossword/index.html",
     ready: true,
+    thumb: "images/thumb-crossword.jpg",
   },
   {
     id: "prize-puzzle",
@@ -31,6 +34,7 @@ const APPS = [
     desc: "数字を見てマスを塗る。練習用。賞品はありません。",
     href: "apps/prize-puzzle/index.html",
     ready: true,
+    thumb: "images/thumb-prize-puzzle.jpg",
   },
   {
     id: "easy-calc",
@@ -39,6 +43,7 @@ const APPS = [
     desc: "やさしい計算。せっていして、4つから選ぶ。",
     href: "apps/easy-calc/index.html",
     ready: true,
+    thumb: "images/thumb-easy-calc.jpg",
   },
   {
     id: "gyakusho",
@@ -47,6 +52,7 @@ const APPS = [
     desc: "設定して、出た数字を逆の順で答える。",
     href: "apps/gyakusho/index.html",
     ready: true,
+    thumb: "images/thumb-gyakusho.jpg",
   },
   {
     id: "ato-janken",
@@ -55,5 +61,6 @@ const APPS = [
     desc: "相手のあとに、手を出す。せっていして遊ぶ。",
     href: "apps/ato-janken/index.html",
     ready: true,
+    thumb: "images/thumb-ato-janken.jpg",
   },
 ];

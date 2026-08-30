@@ -12,12 +12,18 @@ function cardHtml(app) {
   const kicker = app.search
     ? `<span class="app-kicker">${escapeHtml(app.search)}</span>`
     : "";
+  const thumb = app.thumb
+    ? `<img class="app-thumb" src="${escapeHtml(app.thumb)}" alt="" width="88" height="88" />`
+    : "";
   return `
     <a class="app-card ${ready ? "is-ready" : "is-wait"}" href="${app.href}">
-      ${kicker}
-      <span class="app-name">${escapeHtml(app.name)}</span>
-      <span class="app-desc">${escapeHtml(app.desc)}</span>
-      ${badge}
+      ${thumb}
+      <span class="app-body">
+        ${kicker}
+        <span class="app-name">${escapeHtml(app.name)}</span>
+        <span class="app-desc">${escapeHtml(app.desc)}</span>
+        ${badge}
+      </span>
     </a>
   `;
 }

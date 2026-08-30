@@ -115,14 +115,31 @@ h1 {
 }
 
 .app-card {
-  display: block;
-  padding: 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 16px;
   background: var(--card);
   color: var(--ink);
   border: 2px solid var(--line);
   border-radius: 16px;
   text-decoration: none;
   box-shadow: var(--shadow);
+}
+
+.app-thumb {
+  flex: 0 0 88px;
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #e8f6fc;
+}
+
+.app-body {
+  display: block;
+  min-width: 0;
+  flex: 1;
 }
 
 .app-card.is-ready {
