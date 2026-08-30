@@ -62,8 +62,11 @@ button {
   display: block;
   width: 100%;
   height: auto;
-  margin: 0 0 20px;
+  margin: 0 0 12px;
   border-radius: 16px;
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow);
+  background: var(--card);
 }
 
 .visually-hidden {
