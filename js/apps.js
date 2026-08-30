@@ -40,4 +40,20 @@ const APPS = [
     href: "apps/easy-calc/index.html",
     ready: true,
   },
+  {
+    id: "gyakusho",
+    name: "逆唱",
+    search: "数字を逆から",
+    desc: "せっていして、出た数字を逆の順で答える。",
+    href: "apps/gyakusho/index.html",
+    ready: true,
+  },
+  {
+    id: "ato-janken",
+    name: "後出しじゃんけん",
+    search: "じゃんけん",
+    desc: "相手のあとに、手を出す。せっていして遊ぶ。",
+    href: "apps/ato-janken/index.html",
+    ready: true,
+  },
 ];
