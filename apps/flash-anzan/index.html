@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>フラッシュ暗算｜すぐ・あそび</title>
+    <meta
+      name="description"
+      content="フラッシュ暗算の練習・検定・競技サバイバル。暗算・そろばん。ブラウザですぐ。広告なし。"
+    />
+    <link rel="stylesheet" href="../../css/common.css" />
+    <link rel="stylesheet" href="css/anzan.css" />
+  </head>
+  <body class="flash-page">
+    <section id="screen-name" class="screen wrap">
+      <a class="back" href="../../index.html">← 玄関にもどる</a>
+      <h1>名前を入れてね</h1>
+      <p class="lead">記録は、この名前ごとに残ります。</p>
+      <div class="name-row">
+        <input id="name-input" type="text" maxlength="20" placeholder="なまえ" />
+        <button type="button" class="btn btn-wide" id="name-go">この名前ではじめる</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="name-guest">ゲスト</button>
+      </div>
+      <p class="note" id="name-list"></p>
+    </section>
+
+    <section id="screen-menu" class="screen wrap" hidden>
+      <a class="back" href="../../index.html">← 玄関にもどる</a>
+      <p class="site-name">フラッシュ暗算・暗算・そろばん</p>
+      <h1>フラッシュ暗算</h1>
+      <p class="lead">数字がつぎつぎ出ます。足してください。</p>
+      <div class="menu-grid">
+        <button type="button" class="btn" id="go-quick">すぐはじめる</button>
+        <button type="button" class="btn btn-ghost" id="go-practice">練習</button>
+        <button type="button" class="btn btn-ghost" id="go-exam">検定</button>
+        <button type="button" class="btn btn-ghost" id="go-survival">競技サバイバル</button>
+        <button type="button" class="btn btn-ghost" id="go-records">記録と弱点</button>
+      </div>
+      <p class="note" id="who-line"></p>
+    </section>
+
+    <section id="screen-challenge" class="screen wrap" hidden>
+      <h1>同じ問題に挑戦</h1>
+      <p class="lead" id="challenge-lead"></p>
+      <button type="button" class="btn btn-wide" id="challenge-start">はじめる</button>
+      <button type="button" class="btn btn-ghost btn-wide" id="challenge-back">やめる</button>
+    </section>
+
+    <section id="screen-practice" class="screen wrap" hidden>
+      <button type="button" class="btn btn-ghost" id="practice-back">← もどる</button>
+      <h1>練習</h1>
+      <div class="field">
+        <label>口数</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-step="count" data-dir="-1">−</button>
+          <output id="out-count">5</output>
+          <button type="button" class="btn btn-ghost" data-step="count" data-dir="1">＋</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>桁数</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-step="digits" data-dir="-1">−</button>
+          <output id="out-digits">1</output>
+          <button type="button" class="btn btn-ghost" data-step="digits" data-dir="1">＋</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>時間</label>
+        <div class="toggle" id="timing-toggle">
+          <button type="button" class="btn btn-ghost is-on" data-timing="interval">間隔</button>
+          <button type="button" class="btn btn-ghost" data-timing="total">合計秒</button>
+        </div>
+      </div>
+      <div class="field" id="field-interval">
+        <label>間隔（ミリ秒）</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-step="intervalMs" data-dir="-1">−</button>
+          <output id="out-interval">1000</output>
+          <button type="button" class="btn btn-ghost" data-step="intervalMs" data-dir="1">＋</button>
+        </div>
+      </div>
+      <div class="field" id="field-total" hidden>
+        <label>合計秒</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-step="totalMs" data-dir="-1">−</button>
+          <output id="out-total">5.0秒</output>
+          <button type="button" class="btn btn-ghost" data-step="totalMs" data-dir="1">＋</button>
+        </div>
+      </div>
+      <div class="check-row">
+        <button type="button" class="btn btn-ghost" id="tog-minus">マイナス なし</button>
+        <button type="button" class="btn btn-ghost" id="tog-comma">カンマ なし</button>
+      </div>
+      <button type="button" class="btn btn-wide" id="practice-start">はじめる</button>
+    </section>
+
+    <section id="screen-exam" class="screen wrap" hidden>
+      <button type="button" class="btn btn-ghost" id="exam-back">← もどる</button>
+      <h1>検定</h1>
+      <p class="warn">この級の表は参考です。公式の検定ではありません。</p>
+      <p class="lead">10問中 7問できたら合格（参考）。</p>
+      <div id="level-list" class="level-list"></div>
+    </section>
+
+    <section id="screen-survival" class="screen wrap" hidden>
+      <button type="button" class="btn btn-ghost" id="survival-back">← もどる</button>
+      <h1>競技サバイバル</h1>
+      <p class="lead">
+        間違えたら終わりです。<br />
+        何問目まで残れるか、が記録です。
+      </p>
+      <button type="button" class="btn btn-wide" id="survival-start">はじめる</button>
+    </section>
+
+    <section id="screen-flash" class="screen flash-screen" hidden>
+      <div class="flash-top">
+        <button type="button" id="flash-quit">やめる</button>
+        <span id="flash-progress"></span>
+      </div>
+      <div class="flash-stage">
+        <p id="flash-num" class="flash-num">用意</p>
+      </div>
+    </section>
+
+    <section id="screen-answer" class="screen answer-screen" hidden>
+      <div class="flash-top">
+        <button type="button" id="answer-quit">やめる</button>
+        <span>答え</span>
+      </div>
+      <div id="answer-display" class="answer-display">0</div>
+      <div class="keypad" id="keypad"></div>
+    </section>
+
+    <section id="screen-result" class="screen wrap" hidden>
+      <p id="result-mark" class="result-mark">せいかい</p>
+      <p id="result-spectator" class="spectator" hidden></p>
+      <p id="result-answers"></p>
+      <ul id="result-break" class="breakdown"></ul>
+      <div class="btn-row cols-2">
+        <button type="button" class="btn" id="res-same">おなじもんだい</button>
+        <button type="button" class="btn btn-ghost" id="res-again">もういちど</button>
+        <button type="button" class="btn btn-ghost" id="res-weak">にがてをやる</button>
+        <button type="button" class="btn btn-ghost" id="res-replay">クラッシュ再生</button>
+        <button type="button" class="btn btn-ghost" id="res-share">わかちあう</button>
+        <button type="button" class="btn btn-ghost" id="res-link">挑戦状リンク</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="res-menu">メニュー</button>
+      </div>
+    </section>
+
+    <section id="screen-replay" class="screen replay-screen" hidden>
+      <div class="flash-top">
+        <button type="button" id="replay-quit">とじる</button>
+        <span>クラッシュ再生</span>
+      </div>
+      <div class="flash-stage">
+        <p id="replay-num" class="flash-num"></p>
+      </div>
+      <p id="replay-meta" class="replay-meta"></p>
+      <div class="btn-row" style="padding: 0 8px">
+        <button type="button" class="btn" id="replay-next">すすむ</button>
+        <button type="button" class="btn btn-ghost" id="replay-auto">ゆっくり再生</button>
+      </div>
+    </section>
+
+    <section id="screen-records" class="screen wrap" hidden>
+      <button type="button" class="btn btn-ghost" id="records-back">← もどる</button>
+      <h1>記録と弱点</h1>
+      <div id="records-box"></div>
+      <button type="button" class="btn btn-wide" id="records-weak-play">にがてを練習</button>
+    </section>
+
+    <script src="js/problem.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/weakness.js"></script>
+    <script src="js/flash.js"></script>
+    <script src="js/share.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
