@@ -8,9 +8,7 @@ function renderApps() {
 // 1つのアプリカードのHTMLをつくる
 function cardHtml(app) {
   const ready = app.ready;
-  const badge = ready
-    ? '<span class="badge badge-go">あそべる</span>'
-    : '<span class="badge badge-wait">準備中</span>';
+  const badge = ready ? "" : '<span class="badge badge-wait">準備中</span>';
   const kicker = app.search
     ? `<span class="app-kicker">${escapeHtml(app.search)}</span>`
     : "";
