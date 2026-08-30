@@ -13,7 +13,7 @@ GitHub の作者メールは `ponnmayo15-a11y@users.noreply.github.com`（Gmail�
 中身は `apps/prize-puzzle/`。遊べるようになったら `js/apps.js` の懸賞パズルだけ `ready: true` と紹介文を直す。
 ホームの `index.html` は触らない。共通の見た目は `css/common.css` を使う。
 
-公開住所: https://ponnmayo15-a11y.github.io/sugu-asobu/
+公開住所: https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/
 正本: このフォルダの `CLAUDE.md`
 
 ## 何を作るか

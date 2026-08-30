@@ -1,5 +1,5 @@
-const SIZE = 6;
-const BOX_H = 2;
+const SIZE = 9;
+const BOX_H = 3;
 const BOX_W = 3;
 
 // マス番号（0〜35）から行と列を出す

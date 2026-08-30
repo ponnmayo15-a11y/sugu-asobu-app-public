@@ -76,7 +76,7 @@ function selectCell(i) {
   if (state.done || isBlack(PUZZLE, i)) return;
   if (state.selected === i) {
     const other = state.dir === "across" ? "down" : "across";
-    if (wordAtDir(PUZZLE, i, other)) state.dir = other;
+    if (wordsAt(PUZZLE, i).some((w) => w.dir === other)) state.dir = other;
   } else {
     state.selected = i;
     const cur = wordAtDir(PUZZLE, i, state.dir);
@@ -303,6 +303,8 @@ function paint() {
   el("undo").disabled = state.done || !state.undo.length;
   el("erase").disabled = state.done;
   el("hint-btn").disabled = state.done;
+  el("mark-daku").hidden = state.done;
+  el("mark-handaku").hidden = state.done;
 }
 
 el("undo").addEventListener("click", undoMove);
@@ -313,5 +315,5 @@ el("mark-daku").addEventListener("click", () => markKana("daku"));
 el("mark-handaku").addEventListener("click", () => markKana("handaku"));
 
 restore();
-startTimer();
+if (!state.done) startTimer();
 paint();

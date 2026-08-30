@@ -10,11 +10,11 @@
 
 このPCを切らしても、この住所で誰でも開けます。
 
-https://ponnmayo15-a11y.github.io/sugu-asobu/
+https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/
 
-QRはホームの下に小さく置いてある。大きな版: https://ponnmayo15-a11y.github.io/sugu-asobu/qr.html
+QRはホームの下に小さく置いてある。大きな版: https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/qr.html
 
-置き場は GitHub Pages。倉庫: https://github.com/ponnmayo15-a11y/sugu-asobu
+置き場は GitHub Pages。倉庫: https://github.com/ponnmayo15-a11y/sugu-asobu-app-public
 
 ## コマンド一覧
 

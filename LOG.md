@@ -5,7 +5,7 @@
 - 直していたのは隣の `crash-anzan`。実際に開いていたのは `sugu-asobu`（すぐ・あそび）
 - `sugu-asobu` 側の合図を GO に変えた。GOのあと最初の数字まで 1.18秒
 - 古いファイルを掴まないよう、スクリプトに版を付けた
-- ネットの住所は `https://ponnmayo15-a11y.github.io/sugu-asobu/` 。GOと待ちをここに上げる
+- ネットの住所は `https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/` 。倉庫名は `sugu-asobu-app-public`
 
 
 ## 2026-08-30
@@ -61,7 +61,7 @@
 
 ### 追記
 - 題名を「すぐ・あそび」に変更（フォルダ名はそのまま）
-- GitHub Pages に公開。このPC不要。住所: https://ponnmayo15-a11y.github.io/sugu-asobu/
+- GitHub Pages に公開。このPC不要。住所: https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/
 - QRはホームの下に小さく置く。大きな版のページは残す
 - ナンプレ／懸賞／かんたん計算の別タブ用紹介文を `handoffs/` に置いた
 
@@ -112,3 +112,8 @@
 ### 次にやること
 - 画面を触ってもらい、マスの大きさ・カギ・ひらがなボタンを合わせる
 - ネットに出すのは、ユーザーが「上げて」と言ってから
+
+### 追記（倉庫名）
+- GitHub の倉庫を `sugu-asobu-app-public` に変更
+- 開く住所: https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/
+- QRも新しい住所に作り直した

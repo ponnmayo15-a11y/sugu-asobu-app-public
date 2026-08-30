@@ -39,7 +39,7 @@ body.cross-page {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 12px;
-  color: var(--muted);
+  color: var(--muted-ink);
   font-size: 0.75rem;
 }
 
@@ -56,6 +56,7 @@ body.cross-page {
   margin: 0 0 12px;
   padding: 12px 14px;
   background: var(--card);
+  color: var(--ink);
   border: 2px solid var(--line);
   border-radius: 14px;
 }
@@ -121,13 +122,13 @@ body.cross-page {
 }
 
 .cell.is-word {
-  background: #fff1e4;
+  background: #e7f4fb;
 }
 
 .cell.is-on {
   outline: 3px solid var(--accent);
   outline-offset: -3px;
-  background: #ffd7b3;
+  background: #cfeaf6;
 }
 
 .cell.is-ok .cell-kana {
@@ -148,7 +149,7 @@ body.cross-page {
   left: 4px;
   font-size: 0.65rem;
   font-weight: 800;
-  color: var(--muted);
+  color: var(--muted-ink);
   line-height: 1;
 }
 
@@ -218,4 +219,11 @@ body.cross-page {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 8px;
+}
+
+.pad-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
 }
