@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>後出しじゃんけん｜すぐ・あそび</title>
+    <meta
+      name="description"
+      content="相手の手のあとに、自分の手を出す。せっていして遊ぶ。広告なし。"
+    />
+    <meta name="theme-color" content="#4eb6e0" />
+    <link rel="icon" type="image/png" href="../../images/favicon-32.png" />
+    <link rel="apple-touch-icon" href="../../images/icon-180.png" />
+    <link rel="stylesheet" href="../../css/common.css" />
+    <link rel="stylesheet" href="css/janken.css" />
+  </head>
+  <body class="janken-page">
+    <section id="screen-setup" class="screen wrap">
+      <a class="back" href="../../index.html">← 玄関にもどる</a>
+      <p class="site-name">じゃんけん</p>
+      <h1>後出しじゃんけん</h1>
+      <p class="lead">相手の手を見てから、自分の手を出します。</p>
+
+      <div class="field">
+        <label>メニュー</label>
+        <div class="picks" data-set="goal">
+          <button type="button" class="pick" data-value="aiko">あいこにしましょう</button>
+          <button type="button" class="pick" data-value="kachi">かちましょう</button>
+          <button type="button" class="pick" data-value="make">まけましょう</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>はやさ</label>
+        <div class="picks" data-set="speed">
+          <button type="button" class="pick" data-value="walk">あるく</button>
+          <button type="button" class="pick" data-value="bike">じてんしゃ</button>
+          <button type="button" class="pick" data-value="car">くるま</button>
+        </div>
+        <p class="field-note">あるくはゆっくり。くるまははやいです。</p>
+      </div>
+      <div class="field">
+        <label>じかん</label>
+        <div class="picks" data-set="timeMin">
+          <button type="button" class="pick" data-value="2">2分間</button>
+          <button type="button" class="pick" data-value="4">4分間</button>
+          <button type="button" class="pick" data-value="0">無制限</button>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-wide" id="setup-start">はじめる</button>
+    </section>
+
+    <section id="screen-play" class="screen wrap" hidden>
+      <header class="play-top">
+        <div class="play-nav">
+          <button type="button" class="btn btn-ghost" id="play-quit">おわり</button>
+          <a class="back" href="../../index.html">玄関</a>
+        </div>
+        <p class="goal-now" id="goal-now">あいこにしましょう</p>
+        <div class="hud">
+          <p>のこり <strong id="time-left">120</strong></p>
+          <p>せいかい <strong id="score">0</strong></p>
+          <p>やった <strong id="progress">0</strong></p>
+        </div>
+        <div class="time-bar" aria-hidden="true">
+          <span id="hand-bar"></span>
+        </div>
+      </header>
+
+      <div class="stage">
+        <p class="cpu-label">あいて</p>
+        <p class="cpu-hand" id="cpu-hand">グー</p>
+        <p class="judge" id="judge" aria-live="polite"></p>
+      </div>
+
+      <div class="hands" id="hands">
+        <button type="button" class="hand-btn" data-hand="gu">グー</button>
+        <button type="button" class="hand-btn" data-hand="choki">チョキ</button>
+        <button type="button" class="hand-btn" data-hand="pa">パー</button>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen wrap" hidden>
+      <a class="back" href="../../index.html">← 玄関にもどる</a>
+      <p class="site-name">じゃんけん</p>
+      <h1>おわり</h1>
+      <p class="result-score" id="result-score">0</p>
+      <p class="result-unit" id="result-unit">もん せいかい</p>
+      <p class="result-meta" id="result-meta"></p>
+      <p class="result-best">このせっていのいちばん <span id="result-best">0</span> もん</p>
+      <p class="new-best" id="result-new" hidden>いちばん を こうしん！</p>
+
+      <div class="miss-box">
+        <h2>まちがえた て</h2>
+        <div id="miss-list"></div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-wide" id="again">もういちど</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="to-setup">せっていをかえる</button>
+        <a class="btn btn-ghost btn-wide" href="../../index.html">玄関にもどる</a>
+      </div>
+    </section>
+
+    <script src="js/logic.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
