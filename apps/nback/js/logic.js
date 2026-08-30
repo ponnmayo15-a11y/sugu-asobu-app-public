@@ -3,7 +3,7 @@ const POS_COUNT = 9;
 const N_MIN = 1;
 const N_MAX = 5;
 const INTERVAL_STEPS = [1500, 2000, 2500, 3000];
-const TRIAL_STEPS = [10, 15, 20];
+const TRIAL_STEPS = [5, 10, 15, 20, 25];
 
 // 0以上 max 未満の整数を1つ出す
 function randInt(max) {
