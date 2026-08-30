@@ -198,6 +198,11 @@ h1 {
   font-size: 0.9rem;
 }
 
+.idea-link {
+  color: var(--muted);
+  font-weight: 700;
+}
+
 .back {
   display: inline-block;
   margin-bottom: 16px;
