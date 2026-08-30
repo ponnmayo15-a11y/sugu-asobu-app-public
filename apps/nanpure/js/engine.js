@@ -2,7 +2,7 @@ const SIZE = 9;
 const BOX_H = 3;
 const BOX_W = 3;
 
-// マス番号（0〜35）から行と列を出す
+// マス番号（0〜80）から行と列を出す
 function rc(i) {
   return { r: Math.floor(i / SIZE), c: i % SIZE };
 }

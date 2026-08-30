@@ -214,6 +214,18 @@ body.cross-page {
   font-size: 1.05rem;
 }
 
+.pad-col {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0;
+}
+
+.pad-gyo {
+  font-size: 0.65em;
+  font-weight: 700;
+}
+
 .marks {
   display: grid;
   grid-template-columns: 1fr 1fr;

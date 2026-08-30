@@ -1,0 +1,20 @@
+{
+  "name": "すぐ・あそび",
+  "short_name": "すぐ・あそび",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#4eb6e0",
+  "theme_color": "#4eb6e0",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

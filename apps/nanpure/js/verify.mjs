@@ -23,9 +23,14 @@ function singlesOnly(givens) {
   return true;
 }
 
+if (PUZZLES.length !== 4) throw new Error(`want 4 puzzles, got ${PUZZLES.length}`);
+
 for (let i = 0; i < PUZZLES.length; i += 1) {
   const givens = parseBoard(PUZZLES[i].givens);
   const solution = parseBoard(PUZZLES[i].solution);
+  if (givens.length !== 81 || solution.length !== 81) {
+    throw new Error(`puzzle ${i + 1}: not 9x9`);
+  }
   const solved = solveUnique(givens);
   if (!solved || !isSolved(solved, solution)) {
     throw new Error(`puzzle ${i + 1}: not unique`);

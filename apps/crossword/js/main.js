@@ -251,7 +251,7 @@ function paintPad() {
   if (state.done) return;
   if (state.padCol < 0) {
     KANA_COLS.forEach((col, i) => {
-      box.appendChild(padBtn(col[0], () => {
+      box.appendChild(padColBtn(col[0], () => {
         state.padCol = i;
         paintPad();
       }));
@@ -273,6 +273,21 @@ function padBtn(label, onClick, ghost) {
   btn.type = "button";
   btn.className = ghost ? "pad-n is-ghost" : "pad-n";
   btn.textContent = label;
+  btn.addEventListener("click", onClick);
+  return btn;
+}
+
+// 「あ行」ボタン。行だけ小さくする
+function padColBtn(kana, onClick) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "pad-n pad-col";
+  const head = document.createElement("span");
+  head.textContent = kana;
+  const gyo = document.createElement("span");
+  gyo.className = "pad-gyo";
+  gyo.textContent = "行";
+  btn.append(head, gyo);
   btn.addEventListener("click", onClick);
   return btn;
 }
