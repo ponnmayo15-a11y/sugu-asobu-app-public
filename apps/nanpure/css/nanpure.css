@@ -156,6 +156,14 @@ body.nanpure-page {
   border-top: 2px solid var(--ink);
 }
 
+.size-6 .cell.box-l {
+  border-left: 3px solid var(--ink);
+}
+
+.size-6 .cell.box-t {
+  border-top: 3px solid var(--ink);
+}
+
 .cell.is-given {
   background: #f3ebe3;
   color: #3d2a1f;

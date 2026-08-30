@@ -182,8 +182,9 @@ function paint() {
 // 1マスの見た目クラス
 function cellClass(i, r, c, conflicts, wrong) {
   const names = ["cell"];
-  if (c % BOX_W === 0) names.push("box-l");
-  if (r % BOX_H === 0) names.push("box-t");
+  const line = SIZE === 6 ? 3 : BOX_W;
+  if (c % line === 0) names.push("box-l");
+  if (r % line === 0) names.push("box-t");
   if (state.given[i]) names.push("is-given");
   if (i === state.selected) names.push("is-on");
   if (i === state.hintAt) names.push("is-hint");
