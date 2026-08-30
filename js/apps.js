@@ -22,7 +22,7 @@ const APPS = [
     id: "crossword",
     name: "クロスワード",
     search: "ことばパズル",
-    desc: "タテ・ヨコにことばを入れる。5×5。",
+    desc: "せっていして、ことばを入れる。",
     href: "apps/crossword/index.html",
     ready: true,
     thumb: "images/thumb-crossword.jpg",

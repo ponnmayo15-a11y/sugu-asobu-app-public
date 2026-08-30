@@ -9,7 +9,7 @@
     <title>クロスワード｜すぐ・あそび</title>
     <meta
       name="description"
-      content="クロスワード。5×5。タテ・ヨコにことばを入れる。ブラウザですぐ。"
+      content="クロスワード。せっていして、タテ・ヨコにことばを入れる。広告なし。"
     />
     <meta name="theme-color" content="#4eb6e0" />
     <link rel="icon" type="image/png" href="../../images/favicon-32.png" />
@@ -18,28 +18,56 @@
     <link rel="stylesheet" href="css/crossword.css" />
   </head>
   <body class="cross-page">
-    <main class="wrap">
+    <section id="screen-setup" class="screen wrap">
+      <a class="back" href="../../index.html">← ホームに戻る</a>
+      <p class="site-name">ことばパズル</p>
+      <h1>クロスワード</h1>
+      <p class="lead">タテとヨコに、ことばを入れます。</p>
+
+      <div class="field">
+        <label>難易度</label>
+        <div class="level-row">
+          <button type="button" class="btn btn-ghost level-btn" data-level="やさしい">やさしい</button>
+          <button type="button" class="btn btn-ghost level-btn" data-level="ふつう">ふつう</button>
+          <button type="button" class="btn btn-ghost level-btn" data-level="むずかしい">むずかしい</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>残り時間</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" id="time-down">−</button>
+          <output id="out-time">なし</output>
+          <button type="button" class="btn btn-ghost" id="time-up">＋</button>
+        </div>
+        <p class="field-note">なし、3分、5分、10分から選べます。</p>
+      </div>
+
+      <button type="button" class="btn btn-wide" id="setup-start">はじめる</button>
+    </section>
+
+    <section id="screen-play" class="screen wrap" hidden>
       <div class="play-nav">
-        <a class="back" href="../../index.html">← ホームに戻る</a>
+        <button type="button" class="btn btn-ghost" id="play-quit">せってい</button>
+        <a class="back" href="../../index.html">ホーム</a>
       </div>
       <header class="play-head">
         <p class="site-name">ことばパズル</p>
         <h1>クロスワード</h1>
-        <p class="lead">タテとヨコに、ことばを入れます。</p>
       </header>
       <div class="hud" aria-live="polite">
-        <p>難易度<br /><strong>やさしい</strong></p>
+        <p>難易度<br /><strong id="stat-level">やさしい</strong></p>
         <p>うめた<br /><strong id="stat-fill">0/13</strong></p>
-        <p>じかん<br /><strong id="stat-time">0:00</strong></p>
+        <p><span id="stat-time-label">じかん</span><br /><strong id="stat-time">0:00</strong></p>
       </div>
       <section class="clue-box" aria-live="polite">
         <p class="clue-kicker" id="clue-kicker">ヨコ 1</p>
         <p class="clue-text" id="clue-text">マスを押してください。</p>
       </section>
       <div id="done-box" class="done-box" hidden>
-        <p>できた！</p>
+        <p id="done-title">できた！</p>
         <div id="word-note" class="word-note"></div>
         <button type="button" class="btn btn-wide" id="again">もういちど</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="to-setup">せっていをかえる</button>
       </div>
       <div id="board" class="board" role="grid" aria-label="クロスワードの盤面"></div>
       <div class="tools">
@@ -61,8 +89,9 @@
         <button type="button" class="pad-n is-ghost" id="mark-daku">゛</button>
         <button type="button" class="pad-n is-ghost" id="mark-handaku">゜</button>
       </div>
-      <p class="pad-note">ぜは「せ」を入れてから「゛」</p>
-    </main>
+      <p class="pad-note">゛で せ→ぜ、す→ず</p>
+    </section>
+
     <script src="js/puzzles.js"></script>
     <script src="js/engine.js"></script>
     <script src="js/storage.js"></script>

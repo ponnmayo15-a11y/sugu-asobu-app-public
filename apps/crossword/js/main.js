@@ -1,18 +1,13 @@
-// 左上の白マス
-function firstWhite() {
-  for (let i = 0; i < SIZE * SIZE; i += 1) {
-    if (!isBlack(PUZZLE, i)) return i;
-  }
-  return 0;
-}
+const settings = loadSettings();
 
 const state = {
-  board: emptyBoard(PUZZLE),
-  selected: firstWhite(),
+  board: [],
+  selected: 0,
   dir: "across",
   padCol: -1,
   undo: [],
   done: false,
+  timedOut: false,
   seconds: 0,
   timerId: 0,
   seenWords: {},
@@ -24,9 +19,67 @@ function el(id) {
   return document.getElementById(id);
 }
 
+// 左上の白マス
+function firstWhite() {
+  for (let i = 0; i < SIZE * SIZE; i += 1) {
+    if (!isBlack(PUZZLE, i)) return i;
+  }
+  return 0;
+}
+
+// せってい画面を出す
+function showSetup() {
+  clearInterval(state.timerId);
+  el("screen-setup").hidden = false;
+  el("screen-play").hidden = true;
+  paintSettings();
+}
+
+// 遊ぶ画面を出す
+function showPlay() {
+  el("screen-setup").hidden = true;
+  el("screen-play").hidden = false;
+}
+
+// 残り時間の表示
+function timeLabel(sec) {
+  if (!sec) return "なし";
+  return `${sec / 60}分`;
+}
+
+// せっていを画面に合わせる
+function paintSettings() {
+  el("out-time").textContent = timeLabel(settings.timeSec);
+  document.querySelectorAll(".level-btn").forEach((btn) => {
+    btn.classList.toggle("is-on", btn.dataset.level === settings.level);
+  });
+}
+
+// 難易度を選ぶ
+function pickLevel(level) {
+  settings.level = level;
+  saveSettings(settings);
+  paintSettings();
+}
+
+// 残り時間を一段動かす
+function nudgeTime(dir) {
+  const i = TIME_OPTS.indexOf(settings.timeSec);
+  const next = TIME_OPTS[i + dir];
+  if (next === undefined) return;
+  settings.timeSec = next;
+  saveSettings(settings);
+  paintSettings();
+}
+
 // 今選んでいることば
 function currentWord() {
   return wordAtDir(PUZZLE, state.selected, state.dir);
+}
+
+// 入力を止める状態か
+function isLocked() {
+  return state.done || state.timedOut;
 }
 
 // セーブ用の中身
@@ -38,30 +91,62 @@ function snapshot() {
     dir: state.dir,
     undo: state.undo,
     done: state.done,
+    timedOut: state.timedOut,
     seconds: state.seconds,
     seenWords: state.seenWords,
   };
 }
 
-// 途中から再開する
-function restore() {
-  const data = loadPlay();
-  if (!data || !Array.isArray(data.board)) return;
-  state.board = data.board;
-  state.selected = data.selected ?? firstWhite();
-  state.dir = data.dir === "down" ? "down" : "across";
-  state.undo = Array.isArray(data.undo) ? data.undo : [];
-  state.done = Boolean(data.done);
-  state.seconds = Number(data.seconds) || 0;
-  state.seenWords = data.seenWords || {};
+// 盤面を空にして始める
+function resetBoard() {
+  PUZZLE = puzzleByLevel(settings.level);
+  state.board = emptyBoard(PUZZLE);
+  state.selected = firstWhite();
+  state.dir = "across";
+  state.padCol = -1;
+  state.undo = [];
+  state.done = false;
+  state.timedOut = false;
+  state.seconds = 0;
+  state.seenWords = {};
+  state.banner = "";
+  clearPlay();
+}
+
+// せっていどおりに遊びはじめる
+function startPlay() {
+  resetBoard();
+  showPlay();
+  startTimer();
+  paint();
+}
+
+// せっていに戻る
+function quitToSetup() {
+  clearInterval(state.timerId);
+  clearPlay();
+  showSetup();
 }
 
 // 1秒進める
 function tick() {
-  if (state.done) return;
+  if (isLocked()) return;
   state.seconds += 1;
+  if (settings.timeSec && state.seconds >= settings.timeSec) {
+    timeUp();
+    return;
+  }
   paintHud();
   savePlay(snapshot());
+}
+
+// 時間切れ
+function timeUp() {
+  state.timedOut = true;
+  state.done = true;
+  clearInterval(state.timerId);
+  savePlay(snapshot());
+  paint();
 }
 
 // 時計を mm:ss にする
@@ -73,7 +158,7 @@ function timeText(sec) {
 
 // マスを選ぶ。同じマスなら向きを変える
 function selectCell(i) {
-  if (state.done || isBlack(PUZZLE, i)) return;
+  if (isLocked() || isBlack(PUZZLE, i)) return;
   if (state.selected === i) {
     const other = state.dir === "across" ? "down" : "across";
     if (wordsAt(PUZZLE, i).some((w) => w.dir === other)) state.dir = other;
@@ -89,7 +174,7 @@ function selectCell(i) {
 
 // 選んだマスに文字を入れる
 function putKana(ch) {
-  if (state.done || state.selected < 0) return;
+  if (isLocked() || state.selected < 0) return;
   if (isBlack(PUZZLE, state.selected)) return;
   if (state.board[state.selected] === solutionAt(PUZZLE, state.selected)) return;
   state.undo.push({ i: state.selected, prev: state.board[state.selected] });
@@ -108,7 +193,7 @@ function markKana(kind) {
 
 // 選んだマスを空にする
 function eraseCell() {
-  if (state.done || state.selected < 0) return;
+  if (isLocked() || state.selected < 0) return;
   if (isBlack(PUZZLE, state.selected)) return;
   const sol = solutionAt(PUZZLE, state.selected);
   if (state.board[state.selected] === sol) return;
@@ -119,7 +204,7 @@ function eraseCell() {
 
 // 一手もどす
 function undoMove() {
-  if (state.done || !state.undo.length) return;
+  if (isLocked() || !state.undo.length) return;
   const last = state.undo.pop();
   state.board[last.i] = last.prev;
   state.selected = last.i;
@@ -146,25 +231,16 @@ function afterEdit() {
 
 // ヒント。文字は埋めない
 function showHint() {
-  if (state.done) return;
+  if (isLocked()) return;
   const hint = makeHint(state.board, PUZZLE, currentWord());
   state.banner = hint.text;
   if (hint.i >= 0) state.selected = hint.i;
   paint();
 }
 
-// はじめから
+// 同じせっていでもういちど
 function resetPlay() {
-  state.board = emptyBoard(PUZZLE);
-  state.selected = firstWhite();
-  state.dir = "across";
-  state.padCol = -1;
-  state.undo = [];
-  state.done = false;
-  state.seconds = 0;
-  state.seenWords = {};
-  state.banner = "";
-  clearPlay();
+  resetBoard();
   startTimer();
   paint();
 }
@@ -178,12 +254,26 @@ function startTimer() {
 // うえの数字を描く
 function paintHud() {
   const all = whiteCount(PUZZLE);
+  el("stat-level").textContent = PUZZLE.level;
   el("stat-fill").textContent = `${correctCount(state.board, PUZZLE)}/${all}`;
-  el("stat-time").textContent = timeText(state.seconds);
+  if (settings.timeSec) {
+    el("stat-time-label").textContent = "のこり";
+    el("stat-time").textContent = timeText(
+      Math.max(0, settings.timeSec - state.seconds)
+    );
+  } else {
+    el("stat-time-label").textContent = "じかん";
+    el("stat-time").textContent = timeText(state.seconds);
+  }
 }
 
 // カギの文を描く
 function paintClue() {
+  if (state.timedOut) {
+    el("clue-kicker").textContent = "時間切れ";
+    el("clue-text").textContent = "せっていに戻って、もういちどできます。";
+    return;
+  }
   if (state.done) {
     el("clue-kicker").textContent = "できた";
     el("clue-text").textContent = "全部つながりました。";
@@ -215,7 +305,7 @@ function paintBoard() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = cellClass(i, wordCells);
-    btn.disabled = isBlack(PUZZLE, i) || state.done;
+    btn.disabled = isBlack(PUZZLE, i) || isLocked();
     const num = numberAt(PUZZLE, i);
     if (num && !isBlack(PUZZLE, i)) {
       const mark = document.createElement("span");
@@ -248,7 +338,7 @@ function cellClass(i, wordCells) {
 function paintPad() {
   const box = el("pad");
   box.replaceChildren();
-  if (state.done) return;
+  if (isLocked()) return;
   if (state.padCol < 0) {
     KANA_COLS.forEach((col, i) => {
       box.appendChild(padColBtn(col[0], () => {
@@ -296,11 +386,10 @@ function padColBtn(kana, onClick) {
 function paintNote() {
   const box = el("word-note");
   box.replaceChildren();
-  if (!state.done) {
-    el("done-box").hidden = true;
-    return;
-  }
-  el("done-box").hidden = false;
+  const show = state.done || state.timedOut;
+  el("done-box").hidden = !show;
+  if (!show) return;
+  el("done-title").textContent = state.timedOut ? "時間切れ" : "できた！";
   PUZZLE.words.forEach((w) => {
     const p = document.createElement("p");
     p.textContent = `${w.answer} … ${w.meaning}`;
@@ -315,13 +404,21 @@ function paint() {
   paintBoard();
   paintPad();
   paintNote();
-  el("undo").disabled = state.done || !state.undo.length;
-  el("erase").disabled = state.done;
-  el("hint-btn").disabled = state.done;
-  el("mark-daku").hidden = state.done;
-  el("mark-handaku").hidden = state.done;
+  el("undo").disabled = isLocked() || !state.undo.length;
+  el("erase").disabled = isLocked();
+  el("hint-btn").disabled = isLocked();
+  el("mark-daku").hidden = isLocked();
+  el("mark-handaku").hidden = isLocked();
 }
 
+document.querySelectorAll(".level-btn").forEach((btn) => {
+  btn.addEventListener("click", () => pickLevel(btn.dataset.level));
+});
+el("time-down").addEventListener("click", () => nudgeTime(-1));
+el("time-up").addEventListener("click", () => nudgeTime(1));
+el("setup-start").addEventListener("click", startPlay);
+el("play-quit").addEventListener("click", quitToSetup);
+el("to-setup").addEventListener("click", quitToSetup);
 el("undo").addEventListener("click", undoMove);
 el("erase").addEventListener("click", eraseCell);
 el("hint-btn").addEventListener("click", showHint);
@@ -329,6 +426,4 @@ el("again").addEventListener("click", resetPlay);
 el("mark-daku").addEventListener("click", () => markKana("daku"));
 el("mark-handaku").addEventListener("click", () => markKana("handaku"));
 
-restore();
-if (!state.done) startTimer();
-paint();
+showSetup();

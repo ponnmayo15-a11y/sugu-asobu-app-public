@@ -2,15 +2,74 @@ body.cross-page {
   min-height: 100dvh;
 }
 
-.cross-page .wrap {
+.screen[hidden] {
+  display: none !important;
+}
+
+#screen-play.wrap {
   display: flex;
   flex-direction: column;
   min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));
   padding-bottom: calc(12px + var(--safe-bottom));
 }
 
-.play-nav .back {
+.field {
+  margin: 0 0 16px;
+}
+
+.field label {
+  display: block;
   margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.field-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  gap: 8px;
+  align-items: center;
+}
+
+.stepper .btn {
+  min-width: 64px;
+  font-size: 1.6rem;
+}
+
+.stepper output {
+  display: block;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.level-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.level-btn.is-on {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
+.play-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.play-nav .back {
+  margin: 0;
 }
 
 .play-head {
@@ -84,8 +143,8 @@ body.cross-page {
   font-weight: 800;
 }
 
-.done-box p {
-  margin: 0 0 8px;
+.done-box .btn {
+  margin-top: 8px;
 }
 
 .word-note p {
