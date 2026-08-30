@@ -51,18 +51,38 @@ function waitThen(ms, fn) {
   setTimeout(fn, ms);
 }
 
+// 回数の表示用の文字をつくる
+function goalText() {
+  return settings.goal === 0 ? "無限" : `${settings.goal}回`;
+}
+
+// いま何問めかを書く
+function progressText() {
+  const now = state.done + (state.phase === "judge" ? 0 : 1);
+  if (settings.goal === 0) return `${now} / 無限`;
+  return `${now} / ${settings.goal}`;
+}
+
+// 回数を1段動かす。10のつぎは無限
+function nudgeGoal(dir) {
+  let i = GOAL_STEPS.indexOf(settings.goal);
+  if (i < 0) i = GOAL_STEPS.indexOf(5);
+  settings.goal = GOAL_STEPS[clamp(i + dir, 0, GOAL_STEPS.length - 1)];
+}
+
 // せっていボタンの見た目を合わせる
 function paintSettings() {
   document.querySelectorAll("[data-digits]").forEach((btn) => {
     btn.classList.toggle("is-on", Number(btn.dataset.digits) === settings.digits);
   });
   el("out-view").textContent = `${settings.viewSec}秒`;
+  el("out-goal").textContent = goalText();
 }
 
 // せいかい数と問題数を書く
 function paintHud() {
   el("score").textContent = String(state.score);
-  el("progress").textContent = String(state.done + (state.phase === "judge" ? 0 : 1));
+  el("progress").textContent = progressText();
 }
 
 // 数字をマスに出す
@@ -92,11 +112,11 @@ function paintTyped() {
 function paintJudge(ok) {
   const node = el("judge");
   if (ok) {
-    node.textContent = "せいかい";
+    node.textContent = "正解";
     node.className = "judge is-ok";
     return;
   }
-  node.textContent = `おしい。こたえは ${digitsText(state.expected)}`;
+  node.textContent = `不正解。答えは ${digitsText(state.expected)}`;
   node.className = "judge is-ng";
 }
 
@@ -115,22 +135,21 @@ function beginMemorize() {
   state.shown = makeDigits(settings.digits);
   state.expected = reverseDigits(state.shown);
   state.typed = [];
-  el("hint").textContent = "おぼえましょう";
+  el("hint").textContent = "覚えましょう";
   el("judge").textContent = "";
   el("judge").className = "judge";
-  el("remember").hidden = true;
   paintDigits(state.shown);
   paintHud();
   setPadOn(false);
   let left = settings.viewSec;
-  el("hint").textContent = `おぼえましょう　のこり ${left}`;
+  el("hint").textContent = `覚えましょう　残り ${left}`;
   state.timerId = setInterval(() => {
     left -= 1;
     if (left <= 0) {
       beginAnswer();
       return;
     }
-    el("hint").textContent = `おぼえましょう　のこり ${left}`;
+    el("hint").textContent = `覚えましょう　残り ${left}`;
   }, 1000);
 }
 
@@ -141,7 +160,6 @@ function beginAnswer() {
   state.locked = false;
   state.typed = [];
   el("hint").textContent = "逆の順で入れてください";
-  el("remember").hidden = true;
   paintTyped();
   setPadOn(true);
 }
@@ -158,6 +176,11 @@ function judgeNow() {
   setPadOn(false);
   waitThen(ok ? 500 : 1400, () => {
     if (state.phase !== "judge") return;
+    if (settings.goal > 0 && state.done >= settings.goal) {
+      fillResult();
+      showResult();
+      return;
+    }
     beginMemorize();
   });
 }
@@ -181,8 +204,9 @@ function eraseDigit() {
 // 結果の数字を埋める
 function fillResult() {
   el("result-score").textContent = String(state.score);
-  el("result-unit").textContent = `${state.done}もんちゅう せいかい`;
-  el("result-meta").textContent = `${settings.digits}ケタ・見る時間 ${settings.viewSec}秒`;
+  el("result-unit").textContent = `${state.done}問中 正解`;
+  el("result-meta").textContent =
+    `${settings.digits}桁・見る時間 ${settings.viewSec}秒・${goalText()}`;
 }
 
 // 今のせっていで遊びはじめる
@@ -192,7 +216,7 @@ function startPlay() {
   state.done = 0;
   state.typed = [];
   el("score").textContent = "0";
-  el("progress").textContent = "1";
+  el("progress").textContent = progressText();
   showPlay();
   beginMemorize();
 }
@@ -227,8 +251,17 @@ function bind() {
     saveSettings(settings);
     paintSettings();
   });
+  el("goal-down").addEventListener("click", () => {
+    nudgeGoal(-1);
+    saveSettings(settings);
+    paintSettings();
+  });
+  el("goal-up").addEventListener("click", () => {
+    nudgeGoal(1);
+    saveSettings(settings);
+    paintSettings();
+  });
   el("setup-start").addEventListener("click", startPlay);
-  el("remember").addEventListener("click", beginAnswer);
   el("erase").addEventListener("click", eraseDigit);
   el("pad").addEventListener("click", (e) => {
     const btn = e.target.closest("[data-n]");

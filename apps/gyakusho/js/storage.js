@@ -1,6 +1,8 @@
 const GYK_KEY = "sugu-asobu-gyakusho-v1";
 
-const DEFAULT_SETTINGS = { digits: 3, viewSec: 5 };
+const DEFAULT_SETTINGS = { digits: 3, viewSec: 5, goal: 5 };
+
+const GOAL_STEPS = [3, 4, 5, 6, 7, 8, 9, 10, 0];
 
 // 数を最小と最大のあいだに収める
 function clamp(n, min, max) {
@@ -17,7 +19,9 @@ function cleanSettings(raw) {
   const digits = [3, 4, 5, 6, 7].includes(Number(s.digits)) ? Number(s.digits) : 3;
   const rawView = Number(s.viewSec);
   const viewSec = rawView === 0 || !Number.isFinite(rawView) ? 5 : clamp(rawView, 2, 15);
-  return { digits, viewSec };
+  const rawGoal = Number(s.goal);
+  const goal = GOAL_STEPS.includes(rawGoal) ? rawGoal : 5;
+  return { digits, viewSec, goal };
 }
 
 // この端末のせっていを読む

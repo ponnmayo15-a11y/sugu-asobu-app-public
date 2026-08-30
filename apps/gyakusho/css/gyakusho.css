@@ -168,10 +168,6 @@ body.gyakusho-page {
   color: #ffd0d4;
 }
 
-.remember-wrap {
-  margin: 8px 0 0;
-}
-
 .pad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
