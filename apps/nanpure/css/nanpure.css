@@ -2,11 +2,75 @@ body.nanpure-page {
   min-height: 100dvh;
 }
 
-.nanpure-page .wrap {
+.screen[hidden] {
+  display: none !important;
+}
+
+#screen-play.wrap {
   display: flex;
   flex-direction: column;
   min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));
   padding-bottom: calc(16px + var(--safe-bottom));
+}
+
+.field {
+  margin: 0 0 16px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.field-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  gap: 8px;
+  align-items: center;
+}
+
+.stepper .btn {
+  min-width: 64px;
+  font-size: 1.6rem;
+}
+
+.stepper output {
+  display: block;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.size-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.size-btn.is-on {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
+.play-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.play-nav .back {
+  margin: 0;
 }
 
 .play-head {
@@ -62,6 +126,10 @@ body.nanpure-page {
   gap: 1px;
 }
 
+.board.size-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
 .cell {
   aspect-ratio: 1;
   min-height: 32px;
@@ -73,6 +141,11 @@ body.nanpure-page {
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
+}
+
+.size-6 .cell {
+  min-height: 44px;
+  font-size: clamp(1.25rem, 6vw, 1.7rem);
 }
 
 .cell.box-l {

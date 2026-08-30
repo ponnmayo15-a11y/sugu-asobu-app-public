@@ -12,7 +12,7 @@ const APPS = [
     id: "nanpure",
     name: "ナンプレ",
     search: "数独",
-    desc: "9×9。マスを選んで数字を入れる。",
+    desc: "せっていして、マスをうめる。",
     href: "apps/nanpure/index.html",
     ready: true,
   },

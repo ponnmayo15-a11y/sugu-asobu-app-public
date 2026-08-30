@@ -34,7 +34,7 @@ function makeSub(min, max) {
   return pack(a, "−", b, a - b);
 }
 
-// 3行・4行の足し算をつくる
+// 3行以上の足し算をつくる
 function makeSumRows(rows, min, max) {
   const nums = [];
   for (let i = 0; i < rows; i += 1) nums.push(randInt(min, max));

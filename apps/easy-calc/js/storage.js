@@ -12,7 +12,7 @@ function cleanSettings(raw) {
   const s = raw && typeof raw === "object" ? raw : {};
   return {
     timeSec: clamp(Number(s.timeSec) || 60, 10, 90),
-    rows: clamp(Number(s.rows) || 2, 2, 4),
+    rows: clamp(Number(s.rows) || 2, 2, 7),
     goal: clamp(Number(s.goal) || 10, 5, 30),
   };
 }

@@ -1,6 +1,19 @@
-const SIZE = 9;
-const BOX_H = 3;
-const BOX_W = 3;
+let SIZE = 9;
+let BOX_H = 3;
+let BOX_W = 3;
+
+// 6×6か9×9かを切り替える
+function setShape(size) {
+  if (size === 6) {
+    SIZE = 6;
+    BOX_H = 2;
+    BOX_W = 3;
+    return;
+  }
+  SIZE = 9;
+  BOX_H = 3;
+  BOX_W = 3;
+}
 
 // マス番号（0〜80）から行と列を出す
 function rc(i) {

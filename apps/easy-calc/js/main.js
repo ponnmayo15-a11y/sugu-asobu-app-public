@@ -71,22 +71,39 @@ function nudge(key, dir, step, min, max) {
   paintSettings();
 }
 
-// 式を行ごとに画面へ出す
+// 1つの数を、桁ごとのマスにする
+function digitCells(n, width) {
+  const box = document.createElement("span");
+  box.className = "digits";
+  String(n)
+    .padStart(width, " ")
+    .split("")
+    .forEach((ch) => {
+      const d = document.createElement("span");
+      d.textContent = ch === " " ? "" : ch;
+      box.append(d);
+    });
+  return box;
+}
+
+// ひっ算の形で式を出す
 function renderExpr(q) {
   const box = el("expr-rows");
   box.replaceChildren();
+  const width = Math.max(...q.nums.map((n) => String(n).length));
   q.nums.forEach((n, i) => {
     const row = document.createElement("p");
     row.className = "expr-row";
     const op = document.createElement("span");
     op.className = "op";
     op.textContent = i === q.nums.length - 1 ? q.op : "";
-    const num = document.createElement("span");
-    num.className = "num";
-    num.textContent = String(n);
-    row.append(op, num);
+    row.append(op, digitCells(n, width));
     box.append(row);
   });
+  const bar = document.createElement("div");
+  bar.className = "hissan-bar";
+  bar.setAttribute("aria-hidden", "true");
+  box.append(bar);
 }
 
 // 今の式と4択を画面に出す
@@ -254,7 +271,7 @@ function bind() {
       const key = btn.dataset.set;
       const dir = Number(btn.dataset.dir);
       if (key === "timeSec") nudge(key, dir, TIME_STEP, 10, 90);
-      if (key === "rows") nudge(key, dir, 1, 2, 4);
+      if (key === "rows") nudge(key, dir, 1, 2, 7);
       if (key === "goal") nudge(key, dir, GOAL_STEP, 5, 30);
     });
   });

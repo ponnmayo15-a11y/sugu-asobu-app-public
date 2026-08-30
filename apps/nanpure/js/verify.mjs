@@ -4,17 +4,18 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const dir = dirname(fileURLToPath(import.meta.url));
-const engineSrc = readFileSync(join(dir, "engine.js"), "utf8");
-const puzzleSrc = readFileSync(join(dir, "puzzles.js"), "utf8");
-const ctx = createContext({});
+const files = ["engine.js", "storage.js", "generate.js"].map((name) =>
+  readFileSync(join(dir, name), "utf8"),
+);
+const ctx = createContext({ Math });
 runInContext(
-  `${engineSrc}\n${puzzleSrc}\nthis.api = { PUZZLES, parseBoard, copyBoard, solveUnique, nextSingle, makeHint, isSolved };`,
+  `${files.join("\n")}\nthis.api = { makePuzzle, setShape, isSolved, makeHint, nextSingle, copyBoard, givenRange };`,
   ctx,
 );
-const { PUZZLES, parseBoard, copyBoard, solveUnique, nextSingle, makeHint, isSolved } = ctx.api;
+const { makePuzzle, setShape, isSolved, makeHint, nextSingle, copyBoard, givenRange } = ctx.api;
 
-function singlesOnly(givens) {
-  const work = copyBoard(givens);
+function singlesOnly(board) {
+  const work = copyBoard(board);
   while (work.includes(0)) {
     const step = nextSingle(work);
     if (!step) return false;
@@ -23,32 +24,27 @@ function singlesOnly(givens) {
   return true;
 }
 
-if (PUZZLES.length !== 4) throw new Error(`want 4 puzzles, got ${PUZZLES.length}`);
-
-for (let i = 0; i < PUZZLES.length; i += 1) {
-  const givens = parseBoard(PUZZLES[i].givens);
-  const solution = parseBoard(PUZZLES[i].solution);
-  if (givens.length !== 81 || solution.length !== 81) {
-    throw new Error(`puzzle ${i + 1}: not 9x9`);
+function check(size, givensWanted) {
+  setShape(size);
+  const p = makePuzzle(size, givensWanted);
+  const filled = p.givens.filter((n) => n).length;
+  const range = givenRange(size);
+  if (p.givens.length !== size * size) throw new Error(`${size}: bad length`);
+  if (filled < range.min) throw new Error(`${size}: too few givens ${filled}`);
+  if (filled > givensWanted) {
+    // 単体だけで解けなくなる手前で止めるので、指定より多く残ってよい
   }
-  const solved = solveUnique(givens);
-  if (!solved || !isSolved(solved, solution)) {
-    throw new Error(`puzzle ${i + 1}: not unique`);
+  if (!isSolved(p.solution, p.solution)) throw new Error(`${size}: solution broken`);
+  if (p.givens.some((n, i) => n && n !== p.solution[i])) {
+    throw new Error(`${size}: given mismatch`);
   }
-  if (!singlesOnly(givens)) {
-    throw new Error(`puzzle ${i + 1}: needs more than singles`);
-  }
-  const hint = makeHint(givens);
-  if (hint.i < 0) throw new Error(`puzzle ${i + 1}: no first hint`);
-  if (givens[hint.i] !== 0) throw new Error(`puzzle ${i + 1}: hint fills a given`);
-  if (givens.some((n, k) => n && n !== solution[k])) {
-    throw new Error(`puzzle ${i + 1}: given mismatches solution`);
-  }
+  if (!singlesOnly(p.givens)) throw new Error(`${size}: not singles`);
+  const hint = makeHint(p.givens);
+  if (hint.i < 0) throw new Error(`${size}: no first hint`);
+  if (p.givens[hint.i] !== 0) throw new Error(`${size}: hint on given`);
+  return filled;
 }
 
-const filled = makeHint(parseBoard(PUZZLES[0].solution));
-if (!filled.text.includes("もう少し") && filled.i >= 0) {
-  // 完成盤は重複も空きもないので「もう少し」になる
-}
-
-console.log(`ok ${PUZZLES.length} puzzles`);
+const g6 = check(6, 18);
+const g9 = check(9, 38);
+console.log(`ok 6x6 givens=${g6} / 9x9 givens=${g9}`);

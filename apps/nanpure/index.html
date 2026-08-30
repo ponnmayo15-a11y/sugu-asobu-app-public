@@ -9,7 +9,7 @@
     <title>ナンプレ｜すぐ・あそび</title>
     <meta
       name="description"
-      content="9×9のナンプレ。マスを選んで数字を入れる。ヒントは理由だけ。広告なし。"
+      content="ナンプレ。6×6と9×9。はじめの数字とヒントの数をせってい。理由だけのヒント。広告なし。"
     />
     <meta name="theme-color" content="#4eb6e0" />
     <link rel="icon" type="image/png" href="../../images/favicon-32.png" />
@@ -18,12 +18,48 @@
     <link rel="stylesheet" href="css/nanpure.css" />
   </head>
   <body class="nanpure-page">
-    <main class="wrap">
+    <section id="screen-setup" class="screen wrap">
       <a class="back" href="../../index.html">← 玄関にもどる</a>
       <p class="site-name">ナンプレ・数独</p>
+      <h1>ナンプレ</h1>
+      <p class="lead">マスを選んで、下の数字を入れます。ヒントは理由だけです。</p>
+
+      <div class="field">
+        <label>ばんめん</label>
+        <div class="size-row">
+          <button type="button" class="btn btn-ghost size-btn" data-size="6">6×6</button>
+          <button type="button" class="btn btn-ghost size-btn" data-size="9">9×9</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>はじめの数字</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-set="givens" data-dir="-1">−</button>
+          <output id="out-givens">38こ（やさしい）</output>
+          <button type="button" class="btn btn-ghost" data-set="givens" data-dir="1">＋</button>
+        </div>
+        <p class="field-note">多いほどやさしいです。</p>
+      </div>
+      <div class="field">
+        <label>ヒントの数</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-set="hints" data-dir="-1">−</button>
+          <output id="out-hints">3かい</output>
+          <button type="button" class="btn btn-ghost" data-set="hints" data-dir="1">＋</button>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-wide" id="setup-start">はじめる</button>
+    </section>
+
+    <section id="screen-play" class="screen wrap" hidden>
+      <div class="play-nav">
+        <button type="button" class="btn btn-ghost" id="play-quit">やめる</button>
+        <a class="back" href="../../index.html">玄関</a>
+      </div>
       <div class="play-head">
         <h1>ナンプレ</h1>
-        <p class="play-meta">9×9　やさしい　<span id="puzzle-no">1 / 4</span></p>
+        <p class="play-meta" id="play-meta">9×9　やさしい</p>
       </div>
       <p class="how">マスを選んで、下の数字を押してください。はじめの数字は動かせません。</p>
       <p class="hint-box" id="hint-text" aria-live="polite">
@@ -38,19 +74,21 @@
         <button type="button" class="pad-n" data-n="4">4</button>
         <button type="button" class="pad-n" data-n="5">5</button>
         <button type="button" class="pad-n" data-n="6">6</button>
-        <button type="button" class="pad-n" data-n="7">7</button>
-        <button type="button" class="pad-n" data-n="8">8</button>
-        <button type="button" class="pad-n" data-n="9">9</button>
+        <button type="button" class="pad-n extra" data-n="7">7</button>
+        <button type="button" class="pad-n extra" data-n="8">8</button>
+        <button type="button" class="pad-n extra" data-n="9">9</button>
       </div>
       <div class="actions">
         <button type="button" class="btn btn-ghost btn-wide" id="erase">けす</button>
-        <button type="button" class="btn btn-wide" id="hint-btn">ヒント（理由だけ）</button>
+        <button type="button" class="btn btn-wide" id="hint-btn">ヒント のこり3</button>
         <button type="button" class="btn btn-ghost btn-wide" id="again">やりなおす</button>
         <button type="button" class="btn btn-ghost btn-wide" id="next">つぎの問題</button>
       </div>
-    </main>
+    </section>
+
     <script src="js/engine.js"></script>
-    <script src="js/puzzles.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/generate.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
