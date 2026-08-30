@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>集計しない｜すぐ・あそび</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#4eb6e0" />
+    <link rel="icon" type="image/png" href="images/favicon-32.png" />
+    <link rel="stylesheet" href="css/common.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <a class="back" href="index.html">← ホームに戻る</a>
+      <h1>この端末は集計しません</h1>
+      <p class="lead" id="msg">覚えています。このパソコンやスマホから開いても、表には増えません。</p>
+    </main>
+    <script>
+      try {
+        localStorage.setItem("sugu-skip-log", "1");
+      } catch (e) {
+        document.getElementById("msg").textContent =
+          "覚えられませんでした。いつも使うブラウザで、もう一度開いてください。";
+      }
+    </script>
+  </body>
+</html>
