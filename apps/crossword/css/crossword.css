@@ -6,6 +6,11 @@ body.cross-page {
   display: none !important;
 }
 
+.setup-title {
+  margin: 20px 0 12px;
+  font-size: 1.3rem;
+}
+
 #screen-play.wrap {
   display: flex;
   flex-direction: column;

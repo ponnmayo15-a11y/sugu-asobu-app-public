@@ -271,7 +271,7 @@ function paintHud() {
 function paintClue() {
   if (state.timedOut) {
     el("clue-kicker").textContent = "時間切れ";
-    el("clue-text").textContent = "せっていに戻って、もういちどできます。";
+    el("clue-text").textContent = "設定に戻って、もういちどできます。";
     return;
   }
   if (state.done) {
