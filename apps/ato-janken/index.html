@@ -73,14 +73,29 @@
 
       <div class="stage">
         <p class="cpu-label">相手</p>
-        <p class="cpu-hand" id="cpu-hand">グー</p>
+        <img
+          class="cpu-hand"
+          id="cpu-hand"
+          src="img/cpu-gu.jpg"
+          alt="グー"
+        />
         <p class="judge" id="judge" aria-live="polite"></p>
       </div>
 
+      <p class="you-label">自分</p>
       <div class="hands" id="hands">
-        <button type="button" class="hand-btn" data-hand="gu">グー</button>
-        <button type="button" class="hand-btn" data-hand="choki">チョキ</button>
-        <button type="button" class="hand-btn" data-hand="pa">パー</button>
+        <button type="button" class="hand-btn" data-hand="gu">
+          <img src="img/me-gu.png" alt="" />
+          <span>グー</span>
+        </button>
+        <button type="button" class="hand-btn" data-hand="choki">
+          <img src="img/me-choki.png" alt="" />
+          <span>チョキ</span>
+        </button>
+        <button type="button" class="hand-btn" data-hand="pa">
+          <img src="img/me-pa.jpg" alt="" />
+          <span>パー</span>
+        </button>
       </div>
     </section>
 

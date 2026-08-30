@@ -1,3 +1,9 @@
+const CPU_IMG = {
+  gu: "img/cpu-gu.jpg",
+  choki: "img/cpu-choki.jpg",
+  pa: "img/cpu-pa.jpg",
+};
+
 const settings = loadSettings();
 
 const state = {
@@ -109,7 +115,9 @@ function paintHud() {
 // 相手の手を出す
 function putCpu() {
   state.cpu = nextCpu(state.cpu);
-  el("cpu-hand").textContent = HAND_NAME[state.cpu];
+  const pic = el("cpu-hand");
+  pic.src = CPU_IMG[state.cpu];
+  pic.alt = HAND_NAME[state.cpu];
   el("judge").textContent = "";
   el("judge").className = "judge";
   el("hands").querySelectorAll(".hand-btn").forEach((btn) => {
