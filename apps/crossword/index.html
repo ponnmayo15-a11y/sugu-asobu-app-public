@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>クロスワード｜すぐ・あそび</title>
+    <meta
+      name="description"
+      content="タテ・ヨコにことばを入れる。5×5。広告なし。すぐ遊べる。"
+    />
+    <link rel="stylesheet" href="../../css/common.css" />
+    <link rel="stylesheet" href="css/crossword.css" />
+  </head>
+  <body class="cross-page">
+    <main class="wrap">
+      <div class="play-nav">
+        <a class="back" href="../../index.html">← 玄関にもどる</a>
+      </div>
+      <header class="play-head">
+        <p class="site-name">ことばパズル</p>
+        <h1>クロスワード</h1>
+      </header>
+      <div class="hud" aria-live="polite">
+        <p>難易度<br /><strong>やさしい</strong></p>
+        <p>うめた<br /><strong id="stat-fill">0/13</strong></p>
+        <p>じかん<br /><strong id="stat-time">0:00</strong></p>
+      </div>
+      <section class="clue-box" aria-live="polite">
+        <p class="clue-kicker" id="clue-kicker">ヨコ 1</p>
+        <p class="clue-text" id="clue-text">マスを押してください。</p>
+      </section>
+      <div id="done-box" class="done-box" hidden>
+        <p>できた！</p>
+        <div id="word-note" class="word-note"></div>
+        <button type="button" class="btn btn-wide" id="again">もういちど</button>
+      </div>
+      <div id="board" class="board" role="grid" aria-label="クロスワードの盤面"></div>
+      <div class="tools">
+        <button type="button" class="tool" id="undo">
+          <span class="tool-icon" aria-hidden="true">↺</span>
+          もどす
+        </button>
+        <button type="button" class="tool" id="erase">
+          <span class="tool-icon" aria-hidden="true">⌫</span>
+          けす
+        </button>
+        <button type="button" class="tool" id="hint-btn">
+          <span class="tool-icon" aria-hidden="true">💡</span>
+          ヒント
+        </button>
+      </div>
+      <div id="pad" class="pad"></div>
+      <div class="marks">
+        <button type="button" class="pad-n is-ghost" id="mark-daku">゛</button>
+        <button type="button" class="pad-n is-ghost" id="mark-handaku">゜</button>
+      </div>
+    </main>
+    <script src="js/puzzles.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

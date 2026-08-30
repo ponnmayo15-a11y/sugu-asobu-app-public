@@ -7,20 +7,40 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>懸賞パズル｜すぐ・あそび</title>
+    <meta
+      name="description"
+      content="イラストロジック。練習用。賞品はありません。ブラウザですぐ。"
+    />
     <link rel="stylesheet" href="../../css/common.css" />
+    <link rel="stylesheet" href="css/puzzle.css" />
   </head>
-  <body>
-    <main class="wrap">
+  <body class="prize-page">
+    <section id="screen-logic" class="screen wrap">
       <a class="back" href="../../index.html">← 玄関にもどる</a>
-      <section class="coming">
-        <p class="site-name">懸賞パズル</p>
-        <h1>懸賞パズル</h1>
-        <p>準備中です。まだ遊べません。</p>
-        <p>抽選も、賞品の発送も、いまはありません。</p>
-        <p class="note">
-          本物の懸賞は、法律（景品表示など）を確認してから作ります。
-        </p>
-      </section>
-    </main>
+      <p class="site-name">懸賞パズル</p>
+      <p class="notice">練習用。賞品はありません。</p>
+      <div class="play-head">
+        <h1>イラストロジック</h1>
+        <p class="play-meta" id="logic-meta"></p>
+      </div>
+      <p class="how">マスを押す：塗る → × → 空。はめ直せます。</p>
+      <div id="logic-done" class="done-box" hidden>
+        <p>できた！</p>
+        <button type="button" class="btn btn-wide" id="logic-next">つぎの問題</button>
+      </div>
+      <p class="check-msg" id="logic-check-msg"></p>
+      <div class="board-scroll">
+        <div id="logic-board" class="logic-grid"></div>
+      </div>
+      <div class="play-actions">
+        <button type="button" class="btn btn-wide" id="logic-check">確認する</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="logic-reset">やりなおす</button>
+      </div>
+    </section>
+
+    <script src="js/logic-engine.js"></script>
+    <script src="js/logic-puzzles.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

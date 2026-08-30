@@ -7,16 +7,103 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>かんたん計算ゲーム｜すぐ・あそび</title>
+    <meta
+      name="description"
+      content="やさしい計算。せっていして、こたえを4つから選ぶ。広告なし。"
+    />
     <link rel="stylesheet" href="../../css/common.css" />
+    <link rel="stylesheet" href="css/calc.css" />
   </head>
-  <body>
-    <main class="wrap">
+  <body class="calc-page">
+    <section id="screen-setup" class="screen wrap">
       <a class="back" href="../../index.html">← 玄関にもどる</a>
-      <section class="coming">
-        <p class="site-name">計算ゲーム</p>
-        <h1>かんたん計算ゲーム</h1>
-        <p>準備中です。まだ遊べません。</p>
-      </section>
-    </main>
+      <p class="site-name">計算ゲーム</p>
+      <h1>かんたん計算</h1>
+      <p class="lead">数字は消えません。こたえを4つから選びます。</p>
+
+      <div class="field">
+        <label>残り時間</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-set="timeSec" data-dir="-1">−</button>
+          <output id="out-time">60秒</output>
+          <button type="button" class="btn btn-ghost" data-set="timeSec" data-dir="1">＋</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>数字の行</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-set="rows" data-dir="-1">−</button>
+          <output id="out-rows">2行</output>
+          <button type="button" class="btn btn-ghost" data-set="rows" data-dir="1">＋</button>
+        </div>
+        <p class="field-note">2行から4行まで。たてに並びます。</p>
+      </div>
+      <div class="field">
+        <label>問題数</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" data-set="goal" data-dir="-1">−</button>
+          <output id="out-goal">10問</output>
+          <button type="button" class="btn btn-ghost" data-set="goal" data-dir="1">＋</button>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-wide" id="setup-start">はじめる</button>
+    </section>
+
+    <section id="screen-play" class="screen wrap" hidden>
+      <header class="calc-top">
+        <div class="play-nav">
+          <button type="button" class="btn btn-ghost" id="play-quit">やめる</button>
+          <a class="back" href="../../index.html">玄関</a>
+        </div>
+        <div class="hud">
+          <p>のこり <strong id="time-left">60</strong></p>
+          <p><strong id="progress">1 / 10</strong> もん</p>
+          <p>せいかい <strong id="score">0</strong></p>
+        </div>
+        <div class="time-bar" aria-hidden="true">
+          <span id="time-bar"></span>
+        </div>
+        <p class="hint" id="hint">こたえをえらんでね</p>
+      </header>
+
+      <div class="stage">
+        <div class="expr-rows" id="expr-rows"></div>
+        <p class="judge" id="judge" aria-live="polite"></p>
+      </div>
+
+      <div class="choices" id="choices">
+        <button type="button" class="choice" data-i="0"></button>
+        <button type="button" class="choice" data-i="1"></button>
+        <button type="button" class="choice" data-i="2"></button>
+        <button type="button" class="choice" data-i="3"></button>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen wrap" hidden>
+      <a class="back" href="../../index.html">← 玄関にもどる</a>
+      <p class="site-name">計算ゲーム</p>
+      <h1>おわり</h1>
+      <p class="result-score" id="result-score">0</p>
+      <p class="result-unit" id="result-unit">もん せいかい</p>
+      <p class="result-meta" id="result-meta"></p>
+      <p class="result-best">このせっていのいちばん <span id="result-best">0</span> もん</p>
+      <p class="new-best" id="result-new" hidden>いちばん を こうしん！</p>
+
+      <div class="miss-box">
+        <h2>まちがえた もんだい</h2>
+        <div id="miss-list"></div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-wide" id="again">もういちど</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="to-setup">せっていをかえる</button>
+        <a class="btn btn-ghost btn-wide" href="../../index.html">玄関にもどる</a>
+      </div>
+    </section>
+
+    <script src="js/storage.js"></script>
+    <script src="js/problem.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

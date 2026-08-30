@@ -86,12 +86,13 @@ body.flash-page {
   border: 2px solid var(--line);
   border-radius: 12px;
   background: var(--card);
+  color: var(--ink);
   cursor: pointer;
   text-align: left;
 }
 
 .level-btn small {
-  color: var(--muted);
+  color: var(--muted-ink);
 }
 
 .warn {
@@ -196,6 +197,7 @@ body.flash-page {
   margin: 16px 0;
   padding: 14px;
   background: var(--card);
+  color: var(--ink);
   border-radius: 14px;
   border: 2px solid var(--line);
 }
@@ -256,6 +258,8 @@ body.flash-page {
   padding: 12px;
   border: 2px solid var(--line);
   border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
   font-size: 1.2rem;
 }
 
@@ -263,13 +267,14 @@ body.flash-page {
   padding: 14px;
   margin-bottom: 12px;
   background: var(--card);
+  color: var(--ink);
   border: 2px solid var(--line);
   border-radius: 14px;
 }
 
 .weak-bar {
   height: 10px;
-  background: #eeeae4;
+  background: #d7eef8;
   border-radius: 999px;
   overflow: hidden;
   margin: 6px 0 14px;

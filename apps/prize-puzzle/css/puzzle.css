@@ -1,0 +1,149 @@
+body.prize-page {
+  min-height: 100dvh;
+}
+
+.notice {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  background: #ffffff;
+  color: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.play-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.play-head h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+}
+
+.play-meta {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.how {
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+
+.board-scroll {
+  overflow: auto;
+  margin: 0 -4px 16px;
+  padding: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.logic-grid {
+  display: grid;
+  gap: 0;
+  width: max-content;
+  margin: 0 auto;
+  border: 3px solid #1c140e;
+  background: #fff;
+}
+
+.logic-corner,
+.logic-clue-col,
+.logic-clue-row,
+.logic-cell {
+  box-sizing: border-box;
+  border: 1px solid #d4c8bc;
+  border-radius: 0;
+}
+
+.logic-corner {
+  min-width: 56px;
+  background: #f3eadc;
+  border-right: 3px solid #1c140e;
+  border-bottom: 3px solid #1c140e;
+}
+
+.logic-clue-col,
+.logic-clue-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 2px;
+  background: #f3eadc;
+  color: #5a4a3e;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.logic-clue-col {
+  flex-direction: column;
+  min-height: 64px;
+  padding: 6px 4px 8px;
+  border-bottom: 3px solid #1c140e;
+}
+
+.logic-clue-row {
+  min-width: 56px;
+  height: 48px;
+  padding: 0 8px;
+  border-right: 3px solid #1c140e;
+}
+
+.logic-cell {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.logic-cell.is-fill {
+  background: var(--ink);
+}
+
+.logic-cell.is-x {
+  background: #e8f6fc;
+  color: var(--muted-ink);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.is-thick-l {
+  border-left: 3px solid #1c140e;
+}
+
+.is-thick-t {
+  border-top: 3px solid #1c140e;
+}
+
+.done-box {
+  margin: 0 0 16px;
+  padding: 16px;
+  background: #e7f6f2;
+  border: 2px solid var(--ok);
+  border-radius: 12px;
+}
+
+.done-box p {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.check-msg {
+  min-height: 1.4em;
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+
+.play-actions {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}

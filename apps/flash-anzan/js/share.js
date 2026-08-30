@@ -29,9 +29,9 @@ function drawResultCard(play) {
   canvas.width = 1080;
   canvas.height = 1080;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#fff6ec";
+  ctx.fillStyle = "#4eb6e0";
   ctx.fillRect(0, 0, 1080, 1080);
-  ctx.fillStyle = "#1c140e";
+  ctx.fillStyle = "#ffffff";
   ctx.font = "700 48px sans-serif";
   ctx.fillText("すぐ・あそび", 80, 120);
   ctx.font = "700 72px sans-serif";
@@ -46,12 +46,12 @@ function paintResult(ctx, play) {
   ctx.fillStyle = ok ? "#1b7f6a" : "#c1121f";
   ctx.font = "700 96px sans-serif";
   ctx.fillText(ok ? "せいかい" : "おしい", 80, 380);
-  ctx.fillStyle = "#1c140e";
+  ctx.fillStyle = "#ffffff";
   ctx.font = "700 54px sans-serif";
   ctx.fillText(`あなたの答え  ${play.answer}`, 80, 500);
   ctx.fillText(`せいかい      ${play.sum}`, 80, 580);
   ctx.font = "400 40px sans-serif";
-  ctx.fillStyle = "#6b5344";
+  ctx.fillStyle = "#e8f6fc";
   ctx.fillText(`${play.settings.count}口  ${play.settings.digits}桁`, 80, 680);
   if (play.survivalFall) {
     ctx.fillText(`${play.survivalFall}問目で落ちた`, 80, 750);

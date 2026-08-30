@@ -7,16 +7,44 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>ナンプレ｜すぐ・あそび</title>
+    <meta
+      name="description"
+      content="6×6のナンプレ。マスを選んで数字を入れる。ヒントは理由だけ。広告なし。"
+    />
     <link rel="stylesheet" href="../../css/common.css" />
+    <link rel="stylesheet" href="css/nanpure.css" />
   </head>
-  <body>
+  <body class="nanpure-page">
     <main class="wrap">
       <a class="back" href="../../index.html">← 玄関にもどる</a>
-      <section class="coming">
-        <p class="site-name">ナンプレ・数独</p>
+      <p class="site-name">ナンプレ・数独</p>
+      <div class="play-head">
         <h1>ナンプレ</h1>
-        <p>準備中です。まだ遊べません。</p>
-      </section>
+        <p class="play-meta">6×6　やさしい　<span id="puzzle-no">1 / 6</span></p>
+      </div>
+      <p class="how">マスを選んで、下の数字を押してください。はじめの数字は動かせません。</p>
+      <p class="hint-box" id="hint-text" aria-live="polite">
+        マスを選んで、下の数字を押してください。
+      </p>
+      <div id="done-box" class="done-box" hidden>できた！</div>
+      <div id="board" class="board" role="grid" aria-label="ナンプレの盤面"></div>
+      <div id="pad" class="pad">
+        <button type="button" class="pad-n" data-n="1">1</button>
+        <button type="button" class="pad-n" data-n="2">2</button>
+        <button type="button" class="pad-n" data-n="3">3</button>
+        <button type="button" class="pad-n" data-n="4">4</button>
+        <button type="button" class="pad-n" data-n="5">5</button>
+        <button type="button" class="pad-n" data-n="6">6</button>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-ghost btn-wide" id="erase">けす</button>
+        <button type="button" class="btn btn-wide" id="hint-btn">ヒント（理由だけ）</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="again">やりなおす</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="next">つぎの問題</button>
+      </div>
     </main>
+    <script src="js/engine.js"></script>
+    <script src="js/puzzles.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>
