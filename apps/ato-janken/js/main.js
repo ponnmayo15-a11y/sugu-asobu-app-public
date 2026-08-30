@@ -112,6 +112,24 @@ function paintHud() {
   el("progress").textContent = String(state.done);
 }
 
+// 自分の手ボタンの並びを、設定どおりにする
+function lineUpHands() {
+  const box = el("hands");
+  const buttons = Array.from(box.querySelectorAll(".hand-btn"));
+  if (settings.shuffle === "on") {
+    for (let i = buttons.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = buttons[i];
+      buttons[i] = buttons[j];
+      buttons[j] = tmp;
+    }
+  } else {
+    const order = { gu: 0, choki: 1, pa: 2 };
+    buttons.sort((a, b) => order[a.dataset.hand] - order[b.dataset.hand]);
+  }
+  buttons.forEach((btn) => box.append(btn));
+}
+
 // 相手の手を出す
 function putCpu() {
   state.cpu = nextCpu(state.cpu);
@@ -124,6 +142,7 @@ function putCpu() {
     btn.className = "hand-btn";
     btn.disabled = false;
   });
+  lineUpHands();
   state.locked = false;
   state.handEndAt = Date.now() + SPEED_MS[settings.speed];
   el("hand-bar").style.width = "100%";
@@ -230,7 +249,7 @@ function fillResult(saved) {
   el("result-best").textContent = String(saved.best);
   el("result-new").hidden = !saved.isNew;
   el("result-meta").textContent =
-    `${GOAL_NAME[settings.goal]}・${SPEED_NAME[settings.speed]}・${timeLabel(settings.timeSec)}`;
+    `${GOAL_NAME[settings.goal]}・${SPEED_NAME[settings.speed]}・${timeLabel(settings.timeSec)}・並び${settings.shuffle === "on" ? "有り" : "無し"}`;
   fillMisses();
 }
 

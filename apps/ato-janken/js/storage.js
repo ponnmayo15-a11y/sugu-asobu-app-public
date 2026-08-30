@@ -1,6 +1,11 @@
 const JANKEN_KEY = "sugu-asobu-ato-janken-v1";
 
-const DEFAULT_SETTINGS = { goal: "aiko", speed: "normal", timeSec: 60 };
+const DEFAULT_SETTINGS = {
+  goal: "aiko",
+  speed: "normal",
+  timeSec: 60,
+  shuffle: "off",
+};
 
 const GOALS = ["aiko", "kachi", "make"];
 const SPEEDS = ["turbo", "fast", "normal", "slow"];
@@ -51,6 +56,7 @@ function cleanSettings(raw) {
     goal: GOALS.includes(s.goal) ? s.goal : "aiko",
     speed: cleanSpeed(s.speed),
     timeSec: cleanTime(s),
+    shuffle: s.shuffle === true || s.shuffle === "on" ? "on" : "off",
   };
 }
 
@@ -88,7 +94,7 @@ function saveSettings(settings) {
 // 同じせっていのいちばんを比べるための名前
 function settingsKey(settings) {
   const s = cleanSettings(settings);
-  return `${s.goal}-${s.speed}-${s.timeSec}`;
+  return `${s.goal}-${s.speed}-${s.timeSec}-${s.shuffle}`;
 }
 
 // 今回の点数がいちばんなら更新する

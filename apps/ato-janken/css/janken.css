@@ -160,6 +160,7 @@ body.janken-page {
   width: min(220px, 56vw);
   height: auto;
   margin: 8px 0 0;
+  transform: rotate(180deg);
 }
 
 .you-label {

@@ -25,7 +25,7 @@
       <p class="lead">相手の手を見てから、自分の手を出します。</p>
 
       <div class="field">
-        <label>ルール</label>
+        <label>設定</label>
         <div class="picks" data-set="goal">
           <button type="button" class="pick" data-value="aiko">あいこにする</button>
           <button type="button" class="pick" data-value="kachi">勝つ</button>
@@ -49,6 +49,14 @@
           <button type="button" class="btn btn-ghost" id="time-plus">＋</button>
         </div>
         <p class="field-note">20秒から2分まで。2分のつぎは無限です。</p>
+      </div>
+      <div class="field">
+        <label>自分の手の並び</label>
+        <div class="picks cols-2" data-set="shuffle">
+          <button type="button" class="pick" data-value="off">無し</button>
+          <button type="button" class="pick" data-value="on">有り</button>
+        </div>
+        <p class="field-note">有りにすると、グー・チョキ・パーの位置が毎回変わります。</p>
       </div>
 
       <button type="button" class="btn btn-wide" id="setup-start">始める</button>
