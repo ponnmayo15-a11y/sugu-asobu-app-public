@@ -63,4 +63,12 @@ const APPS = [
     ready: true,
     thumb: "images/thumb-ato-janken.jpg",
   },
+  {
+    id: "nback",
+    name: "Nバック",
+    search: "N個前と同じ",
+    desc: "いまは準備中。N個前と同じなら押す。",
+    href: "apps/nback/index.html",
+    ready: false,
+  },
 ];

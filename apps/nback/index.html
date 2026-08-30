@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Nバック｜すぐ・あそび</title>
+    <meta
+      name="description"
+      content="Nバック。N個前と同じなら押す。ばしょだけ、またはばしょとおと。ブラウザですぐ。"
+    />
+    <meta name="theme-color" content="#4eb6e0" />
+    <link rel="icon" type="image/png" href="../../images/favicon-32.png" />
+    <link rel="apple-touch-icon" href="../../images/icon-180.png" />
+    <link rel="stylesheet" href="../../css/common.css" />
+    <link rel="stylesheet" href="css/nback.css" />
+  </head>
+  <body class="nback-page">
+    <section id="screen-setup" class="screen wrap">
+      <a class="back" href="../../index.html">← ホームに戻る</a>
+      <p class="site-name">N個前と同じ</p>
+      <h1>Nバック</h1>
+      <p class="lead">
+        マスが光ります。N個前と同じなら、下のボタンを押します。1バックは直前と同じ。
+      </p>
+
+      <h2 class="setup-title">設定</h2>
+      <div class="field">
+        <label>何を覚える</label>
+        <div class="pick-row">
+          <button type="button" class="btn btn-ghost pick" data-dual="0">ばしょだけ</button>
+          <button type="button" class="btn btn-ghost pick" data-dual="1">ばしょとおと</button>
+        </div>
+        <p class="field-note" id="mode-note">マスの位置だけ。同じなら「同じ」を押します。</p>
+      </div>
+      <div class="field">
+        <label>N（いくつ前）</label>
+        <div class="pick-row cols-3" id="n-picks"></div>
+        <p class="field-note">よくできたら、つぎのNが開きます。</p>
+      </div>
+      <div class="field">
+        <label>速さ</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" id="interval-down">−</button>
+          <output id="out-interval">2秒</output>
+          <button type="button" class="btn btn-ghost" id="interval-up">＋</button>
+        </div>
+        <p class="field-note">1.5秒から3秒まで。0.5秒ずつ変えられます。</p>
+      </div>
+      <div class="field">
+        <label>回数</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" id="trials-down">−</button>
+          <output id="out-trials">15回</output>
+          <button type="button" class="btn btn-ghost" id="trials-up">＋</button>
+        </div>
+        <p class="field-note">10回・15回・20回。ライフ制ではありません。</p>
+      </div>
+
+      <p class="today-line" id="today-line"></p>
+      <div class="week" id="week" aria-label="今週やった日"></div>
+      <div class="hist" id="hist" hidden></div>
+
+      <button type="button" class="btn btn-wide" id="setup-start">始める</button>
+      <button type="button" class="btn btn-ghost btn-wide" id="to-how">やり方</button>
+    </section>
+
+    <section id="screen-how" class="screen wrap" hidden>
+      <a class="back" href="../../index.html">← ホームに戻る</a>
+      <p class="site-name">N個前と同じ</p>
+      <h1>やり方</h1>
+      <ol class="how-list">
+        <li>3×3のマスのどれかが、つぎつぎ光ります。</li>
+        <li>「N個前」と同じマスなら、<strong>同じ</strong> を押します。</li>
+        <li>1バックは直前。2バックは2個前です。</li>
+        <li>違うときは押しません。</li>
+        <li>ばしょとおとでは、マスと音をべつべつに覚えます。ボタンも2つです。</li>
+      </ol>
+      <p class="how-note">
+        点は、せいかい ÷（せいかい＋おしい＋見逃し）です。同じときに押す、違うときに押さない、がせいかいです。
+      </p>
+      <div class="btn-row">
+        <button type="button" class="btn btn-wide" id="how-practice">練習する（1バック）</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="how-ok">わかった</button>
+      </div>
+    </section>
+
+    <section id="screen-play" class="screen wrap" hidden>
+      <header class="play-top">
+        <div class="play-nav">
+          <button type="button" class="btn btn-ghost" id="play-quit">やめる</button>
+          <a class="back" href="../../index.html">ホーム</a>
+        </div>
+        <div class="hud">
+          <p>N <strong id="hud-n">2</strong></p>
+          <p>せいかい <strong id="score">0</strong></p>
+          <p><strong id="progress">1 / 15</strong></p>
+        </div>
+        <p class="hint" id="hint">マスを見て</p>
+      </header>
+
+      <div class="stage">
+        <p class="sound-pill" id="sound-pill" hidden></p>
+        <div class="grid-wrap" id="grid-wrap">
+          <div class="grid" id="grid"></div>
+        </div>
+        <p class="judge" id="judge" aria-live="polite"></p>
+      </div>
+
+      <div class="match-row" id="match-row">
+        <button type="button" class="match-btn" id="btn-pos">同じ</button>
+        <button type="button" class="match-btn" id="btn-sound" hidden>おと</button>
+      </div>
+
+      <div class="pause" id="pause" hidden>
+        <p>いちじていし</p>
+        <button type="button" class="btn" id="resume">つづける</button>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen wrap" hidden>
+      <a class="back" href="../../index.html">← ホームに戻る</a>
+      <p class="site-name">N個前と同じ</p>
+      <h1>終了</h1>
+      <p class="result-score" id="result-score">0</p>
+      <p class="result-unit" id="result-unit">%</p>
+      <p class="result-meta" id="result-meta"></p>
+      <p class="result-break" id="result-break"></p>
+      <p class="result-how">
+        点は、せいかい ÷（せいかい＋おしい＋見逃し）です。同じときに押す／違うときに押さない、がせいかいです。
+      </p>
+      <p class="result-best">この設定の最高 <span id="result-best">0</span>%</p>
+      <p class="result-best">今日のいちばん <span id="result-today">0</span>%</p>
+      <p class="new-best" id="result-new" hidden>最高を更新！</p>
+      <p class="next-n" id="next-n"></p>
+
+      <div class="miss-box" id="miss-box">
+        <h2>おしい・見逃し</h2>
+        <div id="miss-list"></div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-wide" id="again">もう一度</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="same-seq">同じ並びでもう一度</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="next-n-btn" hidden>つぎのNでやる</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="to-setup">設定を変える</button>
+        <a class="btn btn-ghost btn-wide" href="../../index.html">ホームに戻る</a>
+      </div>
+    </section>
+
+    <section id="screen-review" class="screen wrap" hidden>
+      <a class="back" href="../../index.html">← ホームに戻る</a>
+      <p class="site-name">N個前と同じ</p>
+      <h1>見返し</h1>
+      <p class="hint" id="review-hint"></p>
+      <div class="grid-wrap" id="review-wrap">
+        <div class="grid" id="review-grid"></div>
+      </div>
+      <p class="judge" id="review-judge"></p>
+      <div class="btn-row">
+        <button type="button" class="btn btn-wide" id="review-next">つぎ</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="review-back">結果へ</button>
+      </div>
+    </section>
+
+    <script src="js/logic.js"></script>
+    <script src="js/sound.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+    <script src="../../js/access-url.js"></script>
+    <script src="../../js/access.js"></script>
+  </body>
+</html>
