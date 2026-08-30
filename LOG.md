@@ -6,6 +6,7 @@
 - 設定画面に、逆唱と同じ「設定」の見出しを入れた
 - 結果の「設定を変える」「この設定の最高」も他ゲームに合わせた
 - 他アプリは触っていない
+- ネットに出した。住所: https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/apps/easy-calc/
 
 ## 2026-08-30 追記（懸賞パズルのせってい）
 
@@ -489,8 +490,8 @@
 - 問題は3問。他アプリは触っていない
 
 ### 次にやること
-- ユーザーが上げてと言ったので、GitHub に出した
-- 住所: https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/apps/crossword/
+- 画面を触ってもらう
+- ネットに出すのは、ユーザーが「上げて」と言ってから
 
 
 
