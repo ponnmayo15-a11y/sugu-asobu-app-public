@@ -34,23 +34,19 @@ function show(id) {
   });
 }
 
-// 起動。名前と挑戦状を見る
+// 起動。名前入力は出さず、すぐメニューか挑戦状へ
 function boot() {
   bind();
   renderLevels();
   renderKeypad();
-  const names = listNames();
-  $("name-list").textContent = names.length ? `前の名前: ${names.join("、")}` : "";
+  state.name = setCurrentName(getCurrentName() || "ゲスト");
   const challenge = readChallenge();
-  state.name = getCurrentName();
   if (challenge) {
     state.pendingChallenge = challenge;
-    if (!state.name) show("screen-name");
-    else openChallenge(challenge);
+    openChallenge(challenge);
     return;
   }
-  if (!state.name) show("screen-name");
-  else openMenu();
+  openMenu();
 }
 
 // ハッシュから挑戦状を読む
@@ -62,8 +58,6 @@ function readChallenge() {
 
 // ボタンを全部つなぐ
 function bind() {
-  $("name-go").onclick = () => enterName($("name-input").value);
-  $("name-guest").onclick = () => enterName("ゲスト");
   $("go-quick").onclick = () => startPlay("practice", quickSettings());
   $("go-practice").onclick = () => openPractice();
   $("go-exam").onclick = () => show("screen-exam");
@@ -119,27 +113,8 @@ function bindResult() {
   $("res-menu").onclick = () => openMenu();
 }
 
-// 名前を入れてメニューへ
-function enterName(name) {
-  const saved = setCurrentName(name || "ゲスト");
-  if (!saved) {
-    toast("名前を入れてください");
-    return;
-  }
-  state.name = saved;
-  if (state.pendingChallenge) {
-    openChallenge(state.pendingChallenge);
-    return;
-  }
-  openMenu();
-}
-
 // メニューを出す
 function openMenu() {
-  $("who-line").textContent = `${state.name} で記録します`;
-  $("name-list").textContent = listNames().length
-    ? `前の名前: ${listNames().join("、")}`
-    : "";
   show("screen-menu");
 }
 

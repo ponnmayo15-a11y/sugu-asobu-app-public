@@ -24,6 +24,7 @@
 - `sugu-asobu` 側の合図を GO に変えた。GOのあと最初の数字まで 1.18秒
 - 古いファイルを掴まないよう、スクリプトに版を付けた
 - ネットの住所は `https://ponnmayo15-a11y.github.io/sugu-asobu-app-public/` 。倉庫名は `sugu-asobu-app-public`
+- フラッシュ暗算の最初の名前入力は消した。記録は「ゲスト」で残る
 
 
 ## 2026-08-30
