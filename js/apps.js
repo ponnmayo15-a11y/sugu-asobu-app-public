@@ -67,8 +67,8 @@ const APPS = [
     id: "nback",
     name: "Nバック",
     search: "N個前と同じ",
-    desc: "いまは準備中。N個前と同じなら押す。",
+    desc: "N個前と同じなら押す。ばしょだけ／ばしょとおと。",
     href: "apps/nback/index.html",
-    ready: false,
+    ready: true,
   },
 ];
