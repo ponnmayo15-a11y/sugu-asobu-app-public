@@ -77,6 +77,10 @@ function paintSettings() {
   });
   el("out-view").textContent = `${settings.viewSec}秒`;
   el("out-goal").textContent = goalText();
+  document.querySelectorAll("[data-move]").forEach((btn) => {
+    const on = btn.dataset.move === "1";
+    btn.classList.toggle("is-on", on === settings.move);
+  });
 }
 
 // せいかい数と問題数を書く
@@ -90,6 +94,7 @@ function paintDigits(digits, emptyCount) {
   const box = el("digit-line");
   box.replaceChildren();
   box.className = `digit-line count-${settings.digits}`;
+  if (state.phase === "memo" && settings.move) box.classList.add("is-memo");
   const list = emptyCount != null ? Array(emptyCount).fill("") : digits;
   list.forEach((n) => {
     const cell = document.createElement("span");
@@ -242,12 +247,12 @@ function bind() {
     });
   });
   el("view-down").addEventListener("click", () => {
-    settings.viewSec = clamp(settings.viewSec - 1, 2, 15);
+    settings.viewSec = clamp(settings.viewSec - 1, 2, 10);
     saveSettings(settings);
     paintSettings();
   });
   el("view-up").addEventListener("click", () => {
-    settings.viewSec = clamp(settings.viewSec + 1, 2, 15);
+    settings.viewSec = clamp(settings.viewSec + 1, 2, 10);
     saveSettings(settings);
     paintSettings();
   });
@@ -260,6 +265,13 @@ function bind() {
     nudgeGoal(1);
     saveSettings(settings);
     paintSettings();
+  });
+  document.querySelectorAll("[data-move]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      settings.move = btn.dataset.move === "1";
+      saveSettings(settings);
+      paintSettings();
+    });
   });
   el("setup-start").addEventListener("click", startPlay);
   el("erase").addEventListener("click", eraseDigit);

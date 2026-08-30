@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" href="../../images/favicon-32.png" />
     <link rel="apple-touch-icon" href="../../images/icon-180.png" />
     <link rel="stylesheet" href="../../css/common.css" />
-    <link rel="stylesheet" href="css/gyakusho.css?v=11" />
+    <link rel="stylesheet" href="css/gyakusho.css?v=14" />
   </head>
   <body class="gyakusho-page">
     <section id="screen-setup" class="screen wrap">
@@ -41,7 +41,7 @@
           <output id="out-view">5秒</output>
           <button type="button" class="btn btn-ghost" id="view-up">＋</button>
         </div>
-        <p class="field-note">2秒から15秒まで。1秒ずつ変えられます。</p>
+        <p class="field-note">2秒から10秒まで。1秒ずつ変えられます。</p>
       </div>
       <div class="field">
         <label>回数</label>
@@ -51,6 +51,13 @@
           <button type="button" class="btn btn-ghost" id="goal-up">＋</button>
         </div>
         <p class="field-note">3回から10回まで。10の次は無限です。</p>
+      </div>
+      <div class="field">
+        <label>数字の動き</label>
+        <div class="pick-row">
+          <button type="button" class="btn btn-ghost pick" data-move="0">動かさない</button>
+          <button type="button" class="btn btn-ghost pick" data-move="1">少し動かす</button>
+        </div>
       </div>
 
       <button type="button" class="btn btn-wide" id="setup-start">始める</button>
@@ -102,8 +109,8 @@
       </div>
     </section>
 
-    <script src="js/problem.js?v=11"></script>
-    <script src="js/storage.js?v=11"></script>
-    <script src="js/main.js?v=11"></script>
+    <script src="js/problem.js?v=14"></script>
+    <script src="js/storage.js?v=14"></script>
+    <script src="js/main.js?v=14"></script>
   </body>
 </html>
