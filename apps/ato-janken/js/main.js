@@ -43,6 +43,16 @@ function showResult() {
   el("screen-result").hidden = false;
 }
 
+// 時間の表示文字（20秒〜2分、または無限）
+function timeLabel(sec) {
+  if (sec === 0) return "無限";
+  if (sec < 60) return `${sec}秒`;
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  if (s === 0) return `${m}分`;
+  return `${m}分${s}秒`;
+}
+
 // せっていボタンの点灯を合わせる
 function paintSettings() {
   document.querySelectorAll("[data-set]").forEach((box) => {
@@ -52,19 +62,29 @@ function paintSettings() {
       btn.classList.toggle("is-on", same);
     });
   });
+  el("out-time").textContent = timeLabel(settings.timeSec);
 }
 
 // せっていの1つを覚える
 function pickSetting(key, value) {
-  settings[key] = key === "timeMin" ? Number(value) : value;
+  settings[key] = value;
   saveSettings(settings);
   paintSettings();
 }
 
-// じかんの表示文字
-function timeLabel(min) {
-  if (min === 0) return "無制限";
-  return `${min}分間`;
+// 時間を10秒ずつ動かす。2分のつぎは無限
+function nudgeTime(dir) {
+  const now = settings.timeSec;
+  if (dir > 0) {
+    if (now === 0) return;
+    settings.timeSec = now >= TIME_MAX ? 0 : now + TIME_STEP;
+  } else if (now === 0) {
+    settings.timeSec = TIME_MAX;
+  } else if (now > TIME_MIN) {
+    settings.timeSec = now - TIME_STEP;
+  }
+  saveSettings(settings);
+  paintSettings();
 }
 
 // のこり秒を 2:00 の形にする
@@ -77,8 +97,8 @@ function clockText(ms) {
 
 // 上の数字を今の状態に合わせる
 function paintHud() {
-  if (settings.timeMin === 0) {
-    el("time-left").textContent = "無制限";
+  if (settings.timeSec === 0) {
+    el("time-left").textContent = "無限";
   } else {
     el("time-left").textContent = clockText(state.endAt - Date.now());
   }
@@ -107,7 +127,7 @@ function tick() {
   const handLeft = Math.max(0, state.handEndAt - Date.now());
   const limit = SPEED_MS[settings.speed];
   el("hand-bar").style.width = `${(handLeft / limit) * 100}%`;
-  if (settings.timeMin > 0 && Date.now() >= state.endAt) {
+  if (settings.timeSec > 0 && Date.now() >= state.endAt) {
     finish();
     return;
   }
@@ -119,8 +139,8 @@ function onTimeout() {
   if (state.ended || state.locked) return;
   state.locked = true;
   state.done += 1;
-  state.misses.push({ cpu: state.cpu, player: "", reason: "じかんぎれ" });
-  el("judge").textContent = "おしい。じかんぎれ";
+  state.misses.push({ cpu: state.cpu, player: "", reason: "時間切れ" });
+  el("judge").textContent = "不正解。時間切れ";
   el("judge").className = "judge is-ng";
   waitThen(900, afterJudge);
 }
@@ -137,19 +157,19 @@ function paintJudge(ok, player) {
     }
   });
   if (ok) {
-    el("judge").textContent = "せいかい";
+    el("judge").textContent = "正解";
     el("judge").className = "judge is-ok";
     return;
   }
   const right = HAND_NAME[neededHand(state.cpu, settings.goal)];
-  el("judge").textContent = `おしい。こたえは ${right}`;
+  el("judge").textContent = `不正解。正解は ${right}`;
   el("judge").className = "judge is-ng";
 }
 
 // 判定のあと、次の手へ進む
 function afterJudge() {
   if (state.ended) return;
-  if (settings.timeMin > 0 && Date.now() >= state.endAt) {
+  if (settings.timeSec > 0 && Date.now() >= state.endAt) {
     finish();
     return;
   }
@@ -169,7 +189,7 @@ function onHand(player) {
     waitThen(320, afterJudge);
     return;
   }
-  state.misses.push({ cpu: state.cpu, player, reason: "まちがい" });
+  state.misses.push({ cpu: state.cpu, player, reason: "間違い" });
   waitThen(1100, afterJudge);
 }
 
@@ -180,7 +200,7 @@ function fillMisses() {
   if (state.misses.length === 0) {
     const p = document.createElement("p");
     p.className = "note";
-    p.textContent = "まちがいは ありません。";
+    p.textContent = "間違いはありません。";
     box.append(p);
     return;
   }
@@ -198,11 +218,11 @@ function fillMisses() {
 // 結果の数字を埋める
 function fillResult(saved) {
   el("result-score").textContent = String(state.score);
-  el("result-unit").textContent = `${state.done}もんちゅう せいかい`;
+  el("result-unit").textContent = `${state.done}問中 正解`;
   el("result-best").textContent = String(saved.best);
   el("result-new").hidden = !saved.isNew;
   el("result-meta").textContent =
-    `${GOAL_NAME[settings.goal]}・${SPEED_NAME[settings.speed]}・${timeLabel(settings.timeMin)}`;
+    `${GOAL_NAME[settings.goal]}・${SPEED_NAME[settings.speed]}・${timeLabel(settings.timeSec)}`;
   fillMisses();
 }
 
@@ -226,8 +246,8 @@ function startPlay() {
   state.cpu = "";
   if (state.timerId) clearInterval(state.timerId);
   el("goal-now").textContent = GOAL_NAME[settings.goal];
-  if (settings.timeMin > 0) {
-    state.endAt = Date.now() + settings.timeMin * 60 * 1000;
+  if (settings.timeSec > 0) {
+    state.endAt = Date.now() + settings.timeSec * 1000;
   } else {
     state.endAt = 0;
   }
@@ -251,6 +271,8 @@ function bind() {
     if (!btn) return;
     onHand(btn.dataset.hand);
   });
+  el("time-minus").addEventListener("click", () => nudgeTime(-1));
+  el("time-plus").addEventListener("click", () => nudgeTime(1));
   el("setup-start").addEventListener("click", startPlay);
   el("again").addEventListener("click", startPlay);
   el("to-setup").addEventListener("click", showSetup);

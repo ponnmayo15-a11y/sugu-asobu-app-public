@@ -9,7 +9,7 @@
     <title>後出しじゃんけん｜すぐ・あそび</title>
     <meta
       name="description"
-      content="相手の手のあとに、自分の手を出す。せっていして遊ぶ。広告なし。"
+      content="相手の手のあとに、自分の手を出す。設定して遊ぶ。広告なし。"
     />
     <meta name="theme-color" content="#4eb6e0" />
     <link rel="icon" type="image/png" href="../../images/favicon-32.png" />
@@ -19,51 +19,52 @@
   </head>
   <body class="janken-page">
     <section id="screen-setup" class="screen wrap">
-      <a class="back" href="../../index.html">← 玄関にもどる</a>
+      <a class="back" href="../../index.html">← 玄関に戻る</a>
       <p class="site-name">じゃんけん</p>
       <h1>後出しじゃんけん</h1>
       <p class="lead">相手の手を見てから、自分の手を出します。</p>
 
       <div class="field">
-        <label>メニュー</label>
+        <label>ルール</label>
         <div class="picks" data-set="goal">
-          <button type="button" class="pick" data-value="aiko">あいこにしましょう</button>
-          <button type="button" class="pick" data-value="kachi">かちましょう</button>
-          <button type="button" class="pick" data-value="make">まけましょう</button>
+          <button type="button" class="pick" data-value="aiko">あいこにする</button>
+          <button type="button" class="pick" data-value="kachi">勝つ</button>
+          <button type="button" class="pick" data-value="make">負ける</button>
         </div>
       </div>
       <div class="field">
-        <label>はやさ</label>
-        <div class="picks" data-set="speed">
-          <button type="button" class="pick" data-value="walk">あるく</button>
-          <button type="button" class="pick" data-value="bike">じてんしゃ</button>
-          <button type="button" class="pick" data-value="car">くるま</button>
+        <label>速さ</label>
+        <div class="picks cols-2" data-set="speed">
+          <button type="button" class="pick" data-value="turbo">超早い</button>
+          <button type="button" class="pick" data-value="fast">早い</button>
+          <button type="button" class="pick" data-value="normal">普通</button>
+          <button type="button" class="pick" data-value="slow">遅い</button>
         </div>
-        <p class="field-note">あるくはゆっくり。くるまははやいです。</p>
       </div>
       <div class="field">
-        <label>じかん</label>
-        <div class="picks" data-set="timeMin">
-          <button type="button" class="pick" data-value="2">2分間</button>
-          <button type="button" class="pick" data-value="4">4分間</button>
-          <button type="button" class="pick" data-value="0">無制限</button>
+        <label>時間</label>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" id="time-minus">−</button>
+          <output id="out-time">1分</output>
+          <button type="button" class="btn btn-ghost" id="time-plus">＋</button>
         </div>
+        <p class="field-note">20秒から2分まで。2分のつぎは無限です。</p>
       </div>
 
-      <button type="button" class="btn btn-wide" id="setup-start">はじめる</button>
+      <button type="button" class="btn btn-wide" id="setup-start">始める</button>
     </section>
 
     <section id="screen-play" class="screen wrap" hidden>
       <header class="play-top">
         <div class="play-nav">
-          <button type="button" class="btn btn-ghost" id="play-quit">おわり</button>
+          <button type="button" class="btn btn-ghost" id="play-quit">終了</button>
           <a class="back" href="../../index.html">玄関</a>
         </div>
-        <p class="goal-now" id="goal-now">あいこにしましょう</p>
+        <p class="goal-now" id="goal-now">あいこにする</p>
         <div class="hud">
-          <p>のこり <strong id="time-left">120</strong></p>
-          <p>せいかい <strong id="score">0</strong></p>
-          <p>やった <strong id="progress">0</strong></p>
+          <p>残り <strong id="time-left">2:00</strong></p>
+          <p>正解 <strong id="score">0</strong></p>
+          <p>回数 <strong id="progress">0</strong></p>
         </div>
         <div class="time-bar" aria-hidden="true">
           <span id="hand-bar"></span>
@@ -71,7 +72,7 @@
       </header>
 
       <div class="stage">
-        <p class="cpu-label">あいて</p>
+        <p class="cpu-label">相手</p>
         <p class="cpu-hand" id="cpu-hand">グー</p>
         <p class="judge" id="judge" aria-live="polite"></p>
       </div>
@@ -84,24 +85,24 @@
     </section>
 
     <section id="screen-result" class="screen wrap" hidden>
-      <a class="back" href="../../index.html">← 玄関にもどる</a>
+      <a class="back" href="../../index.html">← 玄関に戻る</a>
       <p class="site-name">じゃんけん</p>
-      <h1>おわり</h1>
+      <h1>終了</h1>
       <p class="result-score" id="result-score">0</p>
-      <p class="result-unit" id="result-unit">もん せいかい</p>
+      <p class="result-unit" id="result-unit">問 正解</p>
       <p class="result-meta" id="result-meta"></p>
-      <p class="result-best">このせっていのいちばん <span id="result-best">0</span> もん</p>
-      <p class="new-best" id="result-new" hidden>いちばん を こうしん！</p>
+      <p class="result-best">この設定の最高 <span id="result-best">0</span> 問</p>
+      <p class="new-best" id="result-new" hidden>最高を更新！</p>
 
       <div class="miss-box">
-        <h2>まちがえた て</h2>
+        <h2>間違えた手</h2>
         <div id="miss-list"></div>
       </div>
 
       <div class="btn-row">
-        <button type="button" class="btn btn-wide" id="again">もういちど</button>
-        <button type="button" class="btn btn-ghost btn-wide" id="to-setup">せっていをかえる</button>
-        <a class="btn btn-ghost btn-wide" href="../../index.html">玄関にもどる</a>
+        <button type="button" class="btn btn-wide" id="again">もう一度</button>
+        <button type="button" class="btn btn-ghost btn-wide" id="to-setup">設定を変える</button>
+        <a class="btn btn-ghost btn-wide" href="../../index.html">玄関に戻る</a>
       </div>
     </section>
 

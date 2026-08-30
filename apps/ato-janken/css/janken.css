@@ -34,6 +34,30 @@ body.janken-page {
   gap: 8px;
 }
 
+.picks.cols-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  gap: 8px;
+  align-items: center;
+}
+
+.stepper .btn {
+  min-width: 64px;
+  font-size: 1.6rem;
+}
+
+.stepper output {
+  display: block;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
 .pick {
   min-height: var(--tap);
   padding: 12px 14px;

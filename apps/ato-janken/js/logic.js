@@ -1,12 +1,17 @@
 const HANDS = ["gu", "choki", "pa"];
 const HAND_NAME = { gu: "グー", choki: "チョキ", pa: "パー" };
 const GOAL_NAME = {
-  aiko: "あいこにしましょう",
-  kachi: "かちましょう",
-  make: "まけましょう",
+  aiko: "あいこにする",
+  kachi: "勝つ",
+  make: "負ける",
 };
-const SPEED_NAME = { walk: "あるく", bike: "じてんしゃ", car: "くるま" };
-const SPEED_MS = { walk: 3500, bike: 2000, car: 1000 };
+const SPEED_NAME = {
+  turbo: "超早い",
+  fast: "早い",
+  normal: "普通",
+  slow: "遅い",
+};
+const SPEED_MS = { turbo: 700, fast: 1200, normal: 2200, slow: 4000 };
 
 // グー・チョキ・パーから1つ出す
 function randomHand() {

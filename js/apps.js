@@ -44,7 +44,7 @@ const APPS = [
     id: "gyakusho",
     name: "逆唱",
     search: "数字を逆から",
-    desc: "せっていして、出た数字を逆の順で答える。",
+    desc: "設定して、出た数字を逆の順で答える。",
     href: "apps/gyakusho/index.html",
     ready: true,
   },

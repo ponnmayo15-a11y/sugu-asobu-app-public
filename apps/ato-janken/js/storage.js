@@ -1,10 +1,43 @@
 const JANKEN_KEY = "sugu-asobu-ato-janken-v1";
 
-const DEFAULT_SETTINGS = { goal: "aiko", speed: "walk", timeMin: 2 };
+const DEFAULT_SETTINGS = { goal: "aiko", speed: "normal", timeSec: 60 };
 
 const GOALS = ["aiko", "kachi", "make"];
-const SPEEDS = ["walk", "bike", "car"];
-const TIMES = [2, 4, 0];
+const SPEEDS = ["turbo", "fast", "normal", "slow"];
+const OLD_SPEED = { walk: "slow", bike: "normal", car: "fast" };
+const TIME_MIN = 20;
+const TIME_MAX = 120;
+const TIME_STEP = 10;
+
+// 数を最小と最大のあいだに収める
+function clamp(n, min, max) {
+  const x = Math.round(n);
+  if (x < min) return min;
+  if (x > max) return max;
+  return x;
+}
+
+// はやさの古い名前を、新しい名前にする
+function cleanSpeed(value) {
+  if (SPEEDS.includes(value)) return value;
+  if (OLD_SPEED[value]) return OLD_SPEED[value];
+  return "normal";
+}
+
+// 時間を20秒〜2分（10秒刻み）か無限（0）にする。古い「分」指定も読み替える
+function cleanTime(raw) {
+  if (Number(raw.timeSec) === 0) return 0;
+  if (raw.timeSec != null && raw.timeSec !== "") {
+    const n = Number(raw.timeSec);
+    if (Number.isFinite(n) && n > 0) {
+      return clamp(Math.round(n / TIME_STEP) * TIME_STEP, TIME_MIN, TIME_MAX);
+    }
+  }
+  const min = Number(raw.timeMin);
+  if (min === 0) return 0;
+  if (min === 2 || min === 4) return 120;
+  return 60;
+}
 
 // 空の保存データをつくる
 function emptyJanken() {
@@ -16,8 +49,8 @@ function cleanSettings(raw) {
   const s = raw && typeof raw === "object" ? raw : {};
   return {
     goal: GOALS.includes(s.goal) ? s.goal : "aiko",
-    speed: SPEEDS.includes(s.speed) ? s.speed : "walk",
-    timeMin: TIMES.includes(Number(s.timeMin)) ? Number(s.timeMin) : 2,
+    speed: cleanSpeed(s.speed),
+    timeSec: cleanTime(s),
   };
 }
 
@@ -55,7 +88,7 @@ function saveSettings(settings) {
 // 同じせっていのいちばんを比べるための名前
 function settingsKey(settings) {
   const s = cleanSettings(settings);
-  return `${s.goal}-${s.speed}-${s.timeMin}`;
+  return `${s.goal}-${s.speed}-${s.timeSec}`;
 }
 
 // 今回の点数がいちばんなら更新する
