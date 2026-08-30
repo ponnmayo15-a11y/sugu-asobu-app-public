@@ -71,6 +71,7 @@ function paintHud() {
 function paintDigits(digits, emptyCount) {
   const box = el("digit-line");
   box.replaceChildren();
+  box.className = `digit-line count-${settings.digits}`;
   const list = emptyCount != null ? Array(emptyCount).fill("") : digits;
   list.forEach((n) => {
     const cell = document.createElement("span");
