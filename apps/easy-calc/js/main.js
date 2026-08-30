@@ -62,6 +62,20 @@ function paintSettings() {
   el("out-time").textContent = `${settings.timeSec}秒`;
   el("out-rows").textContent = `${settings.rows}行`;
   el("out-goal").textContent = `${settings.goal}問`;
+  document.querySelectorAll("[data-op]").forEach((btn) => {
+    btn.classList.toggle("is-on", settings.ops.includes(btn.dataset.op));
+  });
+}
+
+// 計算の種類をオンオフする。最後の1つは消さない
+function toggleOp(kind) {
+  const on = settings.ops.includes(kind);
+  if (on && settings.ops.length === 1) return;
+  settings.ops = on
+    ? settings.ops.filter((k) => k !== kind)
+    : ["add", "sub", "mul"].filter((k) => settings.ops.includes(k) || k === kind);
+  saveSettings(settings);
+  paintSettings();
 }
 
 // せっていの＋−を1段動かす
@@ -108,7 +122,7 @@ function renderExpr(q) {
 
 // 今の式と4択を画面に出す
 function putQuestion() {
-  state.current = nextQuestion(settings.rows, state.level);
+  state.current = nextQuestion(settings.rows, state.level, settings.ops);
   el("expr-rows").className = `expr-rows rows-${state.current.nums.length}`;
   renderExpr(state.current);
   el("progress").textContent = `${state.done + 1} / ${settings.goal}`;
@@ -219,8 +233,9 @@ function fillResult(saved) {
   el("result-unit").textContent = `${settings.goal}もんちゅう せいかい`;
   el("result-best").textContent = String(saved.best);
   el("result-new").hidden = !saved.isNew;
+  const opsText = settings.ops.map((k) => OP_LABEL[k]).join("・");
   el("result-meta").textContent =
-    `のこり時間 ${settings.timeSec}秒・${settings.rows}行・${settings.goal}問`;
+    `${opsText}・${settings.timeSec}秒・${settings.rows}行・${settings.goal}問`;
   fillMisses();
 }
 
@@ -274,6 +289,9 @@ function bind() {
       if (key === "rows") nudge(key, dir, 1, 2, 7);
       if (key === "goal") nudge(key, dir, GOAL_STEP, 5, 30);
     });
+  });
+  document.querySelectorAll("[data-op]").forEach((btn) => {
+    btn.addEventListener("click", () => toggleOp(btn.dataset.op));
   });
   el("setup-start").addEventListener("click", startPlay);
   el("again").addEventListener("click", startPlay);

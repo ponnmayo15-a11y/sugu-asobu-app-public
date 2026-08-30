@@ -34,6 +34,22 @@ body.calc-page {
   font-size: 0.9rem;
 }
 
+.pick-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.pick-row.cols-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.pick.is-on {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
 .stepper {
   display: grid;
   grid-template-columns: 64px 1fr 64px;

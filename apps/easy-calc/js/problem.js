@@ -1,3 +1,5 @@
+const OP_KINDS = ["add", "sub", "mul"];
+
 // minからmaxまでの整数を1つ出す
 function randInt(min, max) {
   return min + Math.floor(Math.random() * (max - min + 1));
@@ -34,6 +36,13 @@ function makeSub(min, max) {
   return pack(a, "−", b, a - b);
 }
 
+// 2行の掛け算をつくる（九九）
+function makeMul() {
+  const a = randInt(2, 9);
+  const b = randInt(2, 9);
+  return pack(a, "×", b, a * b);
+}
+
 // 3行以上の足し算をつくる
 function makeSumRows(rows, min, max) {
   const nums = [];
@@ -42,12 +51,45 @@ function makeSumRows(rows, min, max) {
   return { nums, op: "+", answer, text: nums.join(" + ") };
 }
 
-// 行数に合わせたやさしい式を1問つくる
-function makeProblem(rows, level) {
+// 3行以上の引き算をつくる。上の数から下を引く。答えは0以上
+function makeSubRows(rows, min, max) {
+  if (rows <= 2) return makeSub(min, max);
+  const rest = [];
+  for (let i = 1; i < rows; i += 1) rest.push(randInt(min, max));
+  const restSum = rest.reduce((sum, n) => sum + n, 0);
+  const answer = randInt(0, max);
+  const first = restSum + answer;
+  return {
+    nums: [first, ...rest],
+    op: "−",
+    answer,
+    text: `${first} − ${rest.join(" − ")}`,
+  };
+}
+
+// 3行の掛け算をつくる。数が大きくなりすぎないようにする
+function makeMulRows(rows) {
+  if (rows <= 2) return makeMul();
+  if (rows >= 4) return makeMul();
+  const nums = [randInt(2, 5), randInt(2, 5), randInt(2, 4)];
+  const answer = nums.reduce((prod, n) => prod * n, 1);
+  return { nums, op: "×", answer, text: nums.join(" × ") };
+}
+
+// 種類と行数に合わせたやさしい式を1問つくる
+function makeProblem(rows, level, kind) {
+  const max = rows >= 3 || level < 2 ? 9 : 19;
+  if (kind === "sub") return makeSubRows(rows, 1, max);
+  if (kind === "mul") return makeMulRows(rows);
   if (rows >= 3) return makeSumRows(rows, 1, 9);
-  const max = level >= 2 ? 19 : 9;
-  if (Math.random() < 0.7) return makeAdd(1, max);
-  return makeSub(2, max + 1);
+  return makeAdd(1, max);
+}
+
+// 選ばれた計算から、1つを決める
+function pickKind(ops) {
+  const list = (ops || []).filter((k) => OP_KINDS.includes(k));
+  const use = list.length ? list : ["add"];
+  return use[randInt(0, use.length - 1)];
 }
 
 // 正解の近くに、まちがい3つを足して4択にする
@@ -64,7 +106,7 @@ function makeChoices(answer) {
 }
 
 // 次の1問（行ごとの数字と4つの選択肢）を出す
-function nextQuestion(rows, level) {
-  const q = makeProblem(rows, level);
+function nextQuestion(rows, level, ops) {
+  const q = makeProblem(rows, level, pickKind(ops));
   return { ...q, choices: makeChoices(q.answer) };
 }

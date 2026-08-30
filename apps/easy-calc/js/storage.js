@@ -1,6 +1,20 @@
 const CALC_KEY = "sugu-asobu-easy-calc-v1";
 
-const DEFAULT_SETTINGS = { timeSec: 60, rows: 2, goal: 10 };
+const DEFAULT_SETTINGS = {
+  timeSec: 60,
+  rows: 2,
+  goal: 10,
+  ops: ["add", "sub", "mul"],
+};
+
+const OP_LABEL = { add: "足し算", sub: "引き算", mul: "掛け算" };
+
+// 計算の種類を整える。1つ以上残す
+function cleanOps(raw) {
+  const list = Array.isArray(raw) ? raw : [];
+  const ops = ["add", "sub", "mul"].filter((k) => list.includes(k));
+  return ops.length ? ops : ["add", "sub", "mul"];
+}
 
 // 空の保存データをつくる
 function emptyCalc() {
@@ -14,6 +28,7 @@ function cleanSettings(raw) {
     timeSec: clamp(Number(s.timeSec) || 60, 10, 90),
     rows: clamp(Number(s.rows) || 2, 2, 7),
     goal: clamp(Number(s.goal) || 10, 5, 30),
+    ops: cleanOps(s.ops),
   };
 }
 
@@ -59,7 +74,7 @@ function saveSettings(settings) {
 // 同じせっていのいちばんを比べるための名前
 function settingsKey(settings) {
   const s = cleanSettings(settings);
-  return `${s.timeSec}-${s.rows}-${s.goal}`;
+  return `${s.timeSec}-${s.rows}-${s.goal}-${s.ops.join("")}`;
 }
 
 // このせっていでのいちばんを出す
