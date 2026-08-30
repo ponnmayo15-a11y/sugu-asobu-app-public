@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" href="../../images/favicon-32.png" />
     <link rel="apple-touch-icon" href="../../images/icon-180.png" />
     <link rel="stylesheet" href="../../css/common.css" />
-    <link rel="stylesheet" href="css/gyakusho.css?v=2" />
+    <link rel="stylesheet" href="css/gyakusho.css?v=5" />
   </head>
   <body class="gyakusho-page">
     <section id="screen-setup" class="screen wrap">
@@ -28,23 +28,22 @@
       <h2 class="setup-title">せってい</h2>
       <div class="field">
         <label>ケタ数</label>
-        <div class="pick-row">
+        <div class="pick-row cols-3">
           <button type="button" class="btn btn-ghost pick" data-digits="3">3ケタ</button>
           <button type="button" class="btn btn-ghost pick" data-digits="4">4ケタ</button>
           <button type="button" class="btn btn-ghost pick" data-digits="5">5ケタ</button>
           <button type="button" class="btn btn-ghost pick" data-digits="6">6ケタ</button>
           <button type="button" class="btn btn-ghost pick" data-digits="7">7ケタ</button>
-          <button type="button" class="btn btn-ghost pick" data-digits="8">8ケタ</button>
         </div>
       </div>
       <div class="field">
         <label>見る時間</label>
-        <div class="pick-row cols-3">
-          <button type="button" class="btn btn-ghost pick" data-view="5">5秒</button>
-          <button type="button" class="btn btn-ghost pick" data-view="10">10秒</button>
-          <button type="button" class="btn btn-ghost pick" data-view="0">なし</button>
+        <div class="stepper">
+          <button type="button" class="btn btn-ghost" id="view-down">−</button>
+          <output id="out-view">5秒</output>
+          <button type="button" class="btn btn-ghost" id="view-up">＋</button>
         </div>
-        <p class="field-note">なしは、「おぼえた」を押すまで数字が残ります。</p>
+        <p class="field-note">2秒から15秒まで。1秒ずつ変えられます。</p>
       </div>
 
       <button type="button" class="btn btn-wide" id="setup-start">はじめる</button>
@@ -99,8 +98,8 @@
       </div>
     </section>
 
-    <script src="js/problem.js?v=2"></script>
-    <script src="js/storage.js?v=2"></script>
-    <script src="js/main.js?v=2"></script>
+    <script src="js/problem.js?v=5"></script>
+    <script src="js/storage.js?v=5"></script>
+    <script src="js/main.js?v=5"></script>
   </body>
 </html>

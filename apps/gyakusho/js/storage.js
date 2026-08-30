@@ -2,11 +2,21 @@ const GYK_KEY = "sugu-asobu-gyakusho-v1";
 
 const DEFAULT_SETTINGS = { digits: 3, viewSec: 5 };
 
+// 数を最小と最大のあいだに収める
+function clamp(n, min, max) {
+  const x = Math.round(Number(n));
+  if (!Number.isFinite(x)) return min;
+  if (x < min) return min;
+  if (x > max) return max;
+  return x;
+}
+
 // せっていを正しい範囲に直す
 function cleanSettings(raw) {
   const s = raw && typeof raw === "object" ? raw : {};
-  const digits = [3, 4, 5, 6, 7, 8].includes(Number(s.digits)) ? Number(s.digits) : 3;
-  const viewSec = [0, 5, 10].includes(Number(s.viewSec)) ? Number(s.viewSec) : 5;
+  const digits = [3, 4, 5, 6, 7].includes(Number(s.digits)) ? Number(s.digits) : 3;
+  const rawView = Number(s.viewSec);
+  const viewSec = rawView === 0 || !Number.isFinite(rawView) ? 5 : clamp(rawView, 2, 15);
   return { digits, viewSec };
 }
 

@@ -21,7 +21,7 @@ check("足し算の 12 にはしない", digitsText(rev) !== "12");
 check("同じ列はせいかい", sameDigits([1, 8, 3], [1, 8, 3]));
 check("ちがう列はおしい", !sameDigits([1, 8, 3], [1, 3, 8]));
 
-for (const n of [3, 4, 5, 6, 7, 8]) {
+for (const n of [3, 4, 5, 6, 7]) {
   const d = makeDigits(n);
   check(`${n}ケタつくれる`, d.length === n);
   check(`${n}ケタは1〜9`, d.every((x) => x >= 1 && x <= 9));

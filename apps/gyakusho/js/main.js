@@ -56,9 +56,7 @@ function paintSettings() {
   document.querySelectorAll("[data-digits]").forEach((btn) => {
     btn.classList.toggle("is-on", Number(btn.dataset.digits) === settings.digits);
   });
-  document.querySelectorAll("[data-view]").forEach((btn) => {
-    btn.classList.toggle("is-on", Number(btn.dataset.view) === settings.viewSec);
-  });
+  el("out-view").textContent = `${settings.viewSec}秒`;
 }
 
 // せいかい数と問題数を書く
@@ -120,11 +118,10 @@ function beginMemorize() {
   el("hint").textContent = "おぼえましょう";
   el("judge").textContent = "";
   el("judge").className = "judge";
-  el("remember").hidden = settings.viewSec !== 0;
+  el("remember").hidden = true;
   paintDigits(state.shown);
   paintHud();
   setPadOn(false);
-  if (settings.viewSec === 0) return;
   let left = settings.viewSec;
   el("hint").textContent = `おぼえましょう　のこり ${left}`;
   state.timerId = setInterval(() => {
@@ -185,8 +182,7 @@ function eraseDigit() {
 function fillResult() {
   el("result-score").textContent = String(state.score);
   el("result-unit").textContent = `${state.done}もんちゅう せいかい`;
-  const view = settings.viewSec === 0 ? "なし" : `${settings.viewSec}秒`;
-  el("result-meta").textContent = `${settings.digits}ケタ・見る時間 ${view}`;
+  el("result-meta").textContent = `${settings.digits}ケタ・見る時間 ${settings.viewSec}秒`;
 }
 
 // 今のせっていで遊びはじめる
@@ -221,12 +217,15 @@ function bind() {
       paintSettings();
     });
   });
-  document.querySelectorAll("[data-view]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      settings.viewSec = Number(btn.dataset.view);
-      saveSettings(settings);
-      paintSettings();
-    });
+  el("view-down").addEventListener("click", () => {
+    settings.viewSec = clamp(settings.viewSec - 1, 2, 15);
+    saveSettings(settings);
+    paintSettings();
+  });
+  el("view-up").addEventListener("click", () => {
+    settings.viewSec = clamp(settings.viewSec + 1, 2, 15);
+    saveSettings(settings);
+    paintSettings();
   });
   el("setup-start").addEventListener("click", startPlay);
   el("remember").addEventListener("click", beginAnswer);

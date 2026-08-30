@@ -44,6 +44,26 @@ body.gyakusho-page {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
+.stepper {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  gap: 8px;
+  align-items: center;
+}
+
+.stepper .btn {
+  min-width: 64px;
+  font-size: 1.6rem;
+}
+
+.stepper output {
+  display: block;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
 .pick.is-on {
   background: var(--accent);
   color: var(--accent-ink);
@@ -105,8 +125,7 @@ body.gyakusho-page {
   margin: 0;
 }
 
-.digit-line.count-7 .digit-cell,
-.digit-line.count-8 .digit-cell {
+.digit-line.count-7 .digit-cell {
   width: clamp(36px, 10vw, 64px);
   height: clamp(48px, 14vw, 80px);
   font-size: clamp(1.6rem, 7vw, 2.6rem);
