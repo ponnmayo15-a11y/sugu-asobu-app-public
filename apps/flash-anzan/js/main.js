@@ -254,7 +254,7 @@ function startSurvival() {
 // 数字の点滅を流す
 function runFlash() {
   if (state.runner) state.runner.stop();
-  $("flash-num").textContent = "用意";
+  $("flash-num").textContent = "GO";
   $("flash-progress").textContent = progressLabel();
   show("screen-flash");
   const ms = intervalMsOf(state.settings);

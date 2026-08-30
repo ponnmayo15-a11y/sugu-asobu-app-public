@@ -19,7 +19,7 @@ function playFlash(numbers, intervalMs, hooks) {
   }
 
   hooks.onReady();
-  timer = window.setTimeout(tick, 500);
+  timer = window.setTimeout(tick, 1180);
 
   return {
     stop() {
