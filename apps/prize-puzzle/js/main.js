@@ -53,14 +53,14 @@ function renderLogic() {
   const board = document.getElementById("logic-board");
   const h = puzzle.answer.length;
   const w = puzzle.answer[0].length;
-  board.style.gridTemplateColumns = `minmax(56px, auto) repeat(${w}, 48px)`;
+  board.style.gridTemplateColumns = `minmax(32px, max-content) repeat(${w}, minmax(0, 1fr))`;
   board.innerHTML = "";
   board.appendChild(document.createElement("div")).className = "logic-corner";
   for (let c = 0; c < w; c += 1) {
-    board.appendChild(colClueEl(clues.cols[c], c));
+    board.appendChild(colClueEl(clues.cols[c]));
   }
   for (let r = 0; r < h; r += 1) {
-    board.appendChild(rowClueEl(clues.rows[r], r));
+    board.appendChild(rowClueEl(clues.rows[r]));
     for (let c = 0; c < w; c += 1) {
       board.appendChild(logicCellEl(r, c));
     }
@@ -68,27 +68,19 @@ function renderLogic() {
   document.getElementById("logic-done").hidden = !play.logicDone;
 }
 
-// 5マスごとの太い線用のクラス
-function thickClass(r, c) {
-  let cls = "";
-  if (c > 0 && c % 5 === 0) cls += " is-thick-l";
-  if (r > 0 && r % 5 === 0) cls += " is-thick-t";
-  return cls;
-}
-
 // タテのヒントます
-function colClueEl(clues, c) {
+function colClueEl(clues) {
   const el = document.createElement("div");
-  el.className = "logic-clue-col" + thickClass(0, c);
+  el.className = "logic-clue-col";
   el.textContent = clues.join("\n");
   el.style.whiteSpace = "pre-line";
   return el;
 }
 
 // ヨコのヒントます
-function rowClueEl(clues, r) {
+function rowClueEl(clues) {
   const el = document.createElement("div");
-  el.className = "logic-clue-row" + thickClass(r, 0);
+  el.className = "logic-clue-row";
   el.textContent = clues.join(" ");
   return el;
 }
@@ -98,11 +90,7 @@ function logicCellEl(r, c) {
   const btn = document.createElement("button");
   const v = play.logicState[r][c];
   btn.type = "button";
-  btn.className =
-    "logic-cell" +
-    (v === 1 ? " is-fill" : "") +
-    (v === 2 ? " is-x" : "") +
-    thickClass(r, c);
+  btn.className = "logic-cell" + (v === 1 ? " is-fill" : "") + (v === 2 ? " is-x" : "");
   btn.textContent = v === 2 ? "×" : "";
   btn.setAttribute("aria-label", `${r + 1}行${c + 1}列`);
   btn.addEventListener("click", () => tapLogic(r, c));
