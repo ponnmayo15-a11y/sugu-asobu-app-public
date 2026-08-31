@@ -1,3 +1,9 @@
+const FACE_IMG = {
+  look: "img/cpu-face-look.png",
+  win: "img/cpu-face-win.png",
+  lose: "img/cpu-face-lose.jpg",
+};
+
 const CPU_IMG = {
   gu: "img/cpu-gu.jpg",
   choki: "img/cpu-choki.jpg",
@@ -112,6 +118,11 @@ function paintHud() {
   el("progress").textContent = String(state.done);
 }
 
+// 相手の顔を、じろっと／にやり／くやしい にする
+function setFace(kind) {
+  el("cpu-face").src = FACE_IMG[kind];
+}
+
 // 自分の手ボタンの並びを、設定どおりにする
 function lineUpHands() {
   const box = el("hands");
@@ -136,6 +147,7 @@ function putCpu() {
   const pic = el("cpu-hand");
   pic.src = CPU_IMG[state.cpu];
   pic.alt = HAND_NAME[state.cpu];
+  setFace("look");
   el("judge").textContent = "";
   el("judge").className = "judge";
   el("hands").querySelectorAll(".hand-btn").forEach((btn) => {
@@ -169,6 +181,7 @@ function onTimeout() {
   state.misses.push({ cpu: state.cpu, player: "", reason: "時間切れ" });
   el("judge").textContent = "不正解。時間切れ";
   el("judge").className = "judge is-ng";
+  setFace("win");
   waitThen(900, afterJudge);
 }
 
@@ -186,11 +199,13 @@ function paintJudge(ok, player) {
   if (ok) {
     el("judge").textContent = "正解";
     el("judge").className = "judge is-ok";
+    setFace("lose");
     return;
   }
   const right = HAND_NAME[neededHand(state.cpu, settings.goal)];
   el("judge").textContent = `不正解。正解は ${right}`;
   el("judge").className = "judge is-ng";
+  setFace("win");
 }
 
 // 判定のあと、次の手へ進む
