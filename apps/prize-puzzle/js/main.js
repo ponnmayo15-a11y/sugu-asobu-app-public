@@ -12,7 +12,13 @@ const LEVELS = [
   {
     id: "hard",
     label: "むずかしい（8×8）",
-    pick: (p) => p.answer.length === 8,
+    pick: (p) => p.level === "むずかしい",
+  },
+  {
+    id: "extreme",
+    label: "激難しい（10×10）",
+    pick: (p) => p.level === "激難しい",
+    needUnlock: true,
   },
 ];
 
@@ -32,6 +38,20 @@ const screens = {
 function showScreen(name) {
   screens.setup.hidden = name !== "setup";
   screens.logic.hidden = name !== "logic";
+}
+
+// むずかしいを全部クリアしたか
+function hardCleared() {
+  const hard = LOGIC_PUZZLES.filter((p) => p.level === "むずかしい");
+  return hard.every((p) => {
+    const saved = loadPlay("logic", p.id);
+    return saved && saved.cleared;
+  });
+}
+
+// この難易度を選んでよいか
+function levelOpen(level) {
+  return !level.needUnlock || hardCleared();
 }
 
 // 今の難易度
@@ -62,23 +82,43 @@ function loadSetup() {
   const data = loadPrize();
   const i = LEVELS.findIndex((lv) => lv.id === data.levelId);
   play.levelIndex = i >= 0 ? i : 0;
+  if (!levelOpen(currentLevel())) play.levelIndex = 2;
 }
 
 // 難易度の表示を更新
 function renderSetup() {
   document.getElementById("out-level").textContent = currentLevel().label;
+  const note = document.getElementById("level-note");
+  if (!note) return;
+  if (hardCleared()) {
+    note.textContent =
+      "やさしい10問・ふつう10問・むずかしい30問・激難しい20問。むずかしいが終わると激難しいへ進みます。";
+  } else {
+    note.textContent =
+      "やさしい10問・ふつう10問・むずかしい30問。やさしいが終わるとふつうへ、ふつうが終わるとむずかしいへ進みます。";
+  }
+}
+
+// 開いている難易度だけを順に動かす
+function stepLevel(dir) {
+  let i = play.levelIndex;
+  for (let n = 0; n < LEVELS.length; n += 1) {
+    i = (i + dir + LEVELS.length) % LEVELS.length;
+    if (levelOpen(LEVELS[i])) {
+      play.levelIndex = i;
+      break;
+    }
+  }
+  saveSetup();
+  renderSetup();
 }
 
 document.getElementById("level-minus").addEventListener("click", () => {
-  play.levelIndex = (play.levelIndex + LEVELS.length - 1) % LEVELS.length;
-  saveSetup();
-  renderSetup();
+  stepLevel(-1);
 });
 
 document.getElementById("level-plus").addEventListener("click", () => {
-  play.levelIndex = (play.levelIndex + 1) % LEVELS.length;
-  saveSetup();
-  renderSetup();
+  stepLevel(1);
 });
 
 document.getElementById("setup-start").addEventListener("click", () => {
@@ -99,7 +139,10 @@ function goNextPuzzle() {
   const n = currentPool().length;
   if (play.poolIndex + 1 < n) {
     play.poolIndex += 1;
-  } else if (play.levelIndex + 1 < LEVELS.length) {
+  } else if (
+    play.levelIndex + 1 < LEVELS.length &&
+    levelOpen(LEVELS[play.levelIndex + 1])
+  ) {
     play.levelIndex += 1;
     play.poolIndex = 0;
     saveSetup();
