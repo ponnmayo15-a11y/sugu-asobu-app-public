@@ -152,6 +152,27 @@ body.gyakusho-page {
   box-shadow: none;
 }
 
+.digit-cell.is-color {
+  font-size: 0;
+}
+
+.color-dot {
+  display: block;
+  width: 58%;
+  height: 58%;
+  border-radius: 50%;
+  border: 2px solid rgba(20, 52, 74, 0.25);
+}
+
+.pad-n.is-color {
+  font-size: 0;
+}
+
+.pad-n.is-color .color-dot {
+  width: 28px;
+  height: 28px;
+}
+
 .digit-line.is-memo .digit-cell {
   animation: float-digit 2.8s ease-in-out infinite;
 }
@@ -233,6 +254,20 @@ body.gyakusho-page {
   box-shadow: var(--shadow);
   cursor: pointer;
   user-select: none;
+}
+
+.pad-both {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.pad-both .pad-n {
+  min-height: 48px;
+  font-size: 1.25rem;
+}
+
+.pad-both #erase {
+  grid-column: 1 / -1;
 }
 
 .pad-n:disabled,

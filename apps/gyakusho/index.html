@@ -15,15 +15,26 @@
     <link rel="icon" type="image/png" href="../../images/favicon-32.png" />
     <link rel="apple-touch-icon" href="../../images/icon-180.png" />
     <link rel="stylesheet" href="../../css/common.css" />
-    <link rel="stylesheet" href="css/gyakusho.css?v=14" />
+    <link rel="stylesheet" href="css/gyakusho.css?v=16" />
   </head>
   <body class="gyakusho-page">
     <section id="screen-setup" class="screen wrap">
       <a class="back" href="../../index.html">← ホームに戻る</a>
       <h1>逆唱</h1>
-      <p class="lead">数字を見て、消えたら逆の順で入れます。例: 3 8 1 と出たら、1 8 3</p>
+      <p class="lead">見て、消えたら逆の順で入れます。例: 3 8 1 と出たら、1 8 3</p>
 
       <h2 class="setup-title">設定</h2>
+      <div class="field">
+        <label>出すもの</label>
+        <div class="pick-row cols-3">
+          <button type="button" class="btn btn-ghost pick" data-kind="num">数字</button>
+          <button type="button" class="btn btn-ghost pick" data-kind="mark">記号</button>
+          <button type="button" class="btn btn-ghost pick" data-kind="both">両方</button>
+          <button type="button" class="btn btn-ghost pick" data-kind="color">色</button>
+          <button type="button" class="btn btn-ghost pick" data-kind="alpha">ABC</button>
+        </div>
+        <p class="field-note">記号は 〇◎△▲■●▢★☆。色は9色の丸。ABCは A〜I。</p>
+      </div>
       <div class="field">
         <label>桁数</label>
         <div class="pick-row cols-3">
@@ -81,18 +92,7 @@
         <p class="judge" id="judge" aria-live="polite"></p>
       </div>
 
-      <div class="pad" id="pad">
-        <button type="button" class="pad-n" data-n="1">1</button>
-        <button type="button" class="pad-n" data-n="2">2</button>
-        <button type="button" class="pad-n" data-n="3">3</button>
-        <button type="button" class="pad-n" data-n="4">4</button>
-        <button type="button" class="pad-n" data-n="5">5</button>
-        <button type="button" class="pad-n" data-n="6">6</button>
-        <button type="button" class="pad-n" data-n="7">7</button>
-        <button type="button" class="pad-n" data-n="8">8</button>
-        <button type="button" class="pad-n" data-n="9">9</button>
-        <button type="button" id="erase">消す</button>
-      </div>
+      <div class="pad" id="pad"></div>
     </section>
 
     <section id="screen-result" class="screen wrap" hidden>
@@ -109,9 +109,9 @@
       </div>
     </section>
 
-    <script src="js/problem.js?v=14"></script>
-    <script src="js/storage.js?v=14"></script>
-    <script src="js/main.js?v=14"></script>
+    <script src="js/problem.js?v=16"></script>
+    <script src="js/storage.js?v=16"></script>
+    <script src="js/main.js?v=16"></script>
     <script src="../../js/access-url.js"></script>
     <script src="../../js/access.js"></script>
   </body>

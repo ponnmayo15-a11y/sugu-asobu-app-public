@@ -70,6 +70,69 @@ function nudgeGoal(dir) {
   settings.goal = GOAL_STEPS[clamp(i + dir, 0, GOAL_STEPS.length - 1)];
 }
 
+// 出すものの名前
+function kindText() {
+  if (settings.kind === "mark") return "記号";
+  if (settings.kind === "both") return "数字と記号";
+  if (settings.kind === "color") return "色";
+  if (settings.kind === "alpha") return "ABC";
+  return "数字";
+}
+
+// 答えるボタンの列を出す
+function padKeys() {
+  if (settings.kind === "mark") return MARKS.slice();
+  if (settings.kind === "both") return NUMS.concat(MARKS);
+  if (settings.kind === "alpha") return ALPHAS.slice();
+  if (settings.kind === "color") return COLORS.map((c) => c.id);
+  return NUMS.slice();
+}
+
+// 色の丸を1つ作る
+function colorDot(id) {
+  const dot = document.createElement("span");
+  dot.className = "color-dot";
+  dot.style.background = colorHex(id);
+  return dot;
+}
+
+// マスに、文字か色の丸を入れる
+function fillCell(cell, value) {
+  if (value === "") return;
+  if (settings.kind === "color") {
+    cell.classList.add("is-color");
+    cell.append(colorDot(value));
+    return;
+  }
+  cell.textContent = String(value);
+}
+
+// 下のボタンを、出すものに合わせる
+function paintPad() {
+  const box = el("pad");
+  box.className = settings.kind === "both" ? "pad pad-both" : "pad";
+  box.replaceChildren();
+  padKeys().forEach((v) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "pad-n";
+    btn.dataset.v = v;
+    if (settings.kind === "color") {
+      btn.classList.add("is-color");
+      btn.append(colorDot(v));
+      btn.setAttribute("aria-label", v);
+    } else {
+      btn.textContent = v;
+    }
+    box.append(btn);
+  });
+  const erase = document.createElement("button");
+  erase.type = "button";
+  erase.id = "erase";
+  erase.textContent = "消す";
+  box.append(erase);
+}
+
 // せっていボタンの見た目を合わせる
 function paintSettings() {
   document.querySelectorAll("[data-digits]").forEach((btn) => {
@@ -80,6 +143,9 @@ function paintSettings() {
   document.querySelectorAll("[data-move]").forEach((btn) => {
     const on = btn.dataset.move === "1";
     btn.classList.toggle("is-on", on === settings.move);
+  });
+  document.querySelectorAll("[data-kind]").forEach((btn) => {
+    btn.classList.toggle("is-on", btn.dataset.kind === settings.kind);
   });
 }
 
@@ -99,7 +165,7 @@ function paintDigits(digits, emptyCount) {
   list.forEach((n) => {
     const cell = document.createElement("span");
     cell.className = n === "" ? "digit-cell is-empty" : "digit-cell";
-    cell.textContent = n === "" ? "" : String(n);
+    fillCell(cell, n === "" ? "" : n);
     box.append(cell);
   });
 }
@@ -137,7 +203,7 @@ function beginMemorize() {
   stopTimer();
   state.phase = "memo";
   state.locked = true;
-  state.shown = makeDigits(settings.digits);
+  state.shown = makeItems(settings.digits, settings.kind);
   state.expected = reverseDigits(state.shown);
   state.typed = [];
   el("hint").textContent = "覚えましょう";
@@ -191,10 +257,10 @@ function judgeNow() {
 }
 
 // テンキーの数字を1つ入れる
-function typeDigit(n) {
+function typeItem(v) {
   if (state.phase !== "answer" || state.locked) return;
   if (state.typed.length >= settings.digits) return;
-  state.typed.push(n);
+  state.typed.push(v);
   paintTyped();
   if (state.typed.length === settings.digits) judgeNow();
 }
@@ -211,7 +277,7 @@ function fillResult() {
   el("result-score").textContent = String(state.score);
   el("result-unit").textContent = `${state.done}問中 正解`;
   el("result-meta").textContent =
-    `${settings.digits}桁・見る時間 ${settings.viewSec}秒・${goalText()}`;
+    `${settings.digits}桁・${kindText()}・見る時間 ${settings.viewSec}秒・${goalText()}`;
 }
 
 // 今のせっていで遊びはじめる
@@ -222,6 +288,7 @@ function startPlay() {
   state.typed = [];
   el("score").textContent = "0";
   el("progress").textContent = progressText();
+  paintPad();
   showPlay();
   beginMemorize();
 }
@@ -273,12 +340,22 @@ function bind() {
       paintSettings();
     });
   });
+  document.querySelectorAll("[data-kind]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      settings.kind = btn.dataset.kind;
+      saveSettings(settings);
+      paintSettings();
+    });
+  });
   el("setup-start").addEventListener("click", startPlay);
-  el("erase").addEventListener("click", eraseDigit);
   el("pad").addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-n]");
+    if (e.target.closest("#erase")) {
+      eraseDigit();
+      return;
+    }
+    const btn = e.target.closest("[data-v]");
     if (!btn) return;
-    typeDigit(Number(btn.dataset.n));
+    typeItem(btn.dataset.v);
   });
   el("again").addEventListener("click", startPlay);
   el("to-setup").addEventListener("click", showSetup);

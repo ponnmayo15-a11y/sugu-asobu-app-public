@@ -21,6 +21,10 @@ check("足し算の 12 にはしない", digitsText(rev) !== "12");
 check("同じ列はせいかい", sameDigits([1, 8, 3], [1, 8, 3]));
 check("ちがう列はおしい", !sameDigits([1, 8, 3], [1, 3, 8]));
 
+check("記号の逆も同じ", sameDigits(reverseDigits(["〇", "▲", "★"]), ["★", "▲", "〇"]));
+check("ABCの逆も同じ", sameDigits(reverseDigits(["A", "C", "I"]), ["I", "C", "A"]));
+check("色の逆も同じ", sameDigits(reverseDigits(["赤", "青", "緑"]), ["緑", "青", "赤"]));
+
 for (const n of [3, 4, 5, 6, 7]) {
   const d = makeDigits(n);
   check(`${n}ケタつくれる`, d.length === n);
