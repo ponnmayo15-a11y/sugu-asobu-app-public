@@ -67,11 +67,23 @@ function makeSubRows(rows, min, max) {
   };
 }
 
-// 3行の掛け算をつくる。数が大きくなりすぎないようにする
+// 掛け算の1つの数の上限。行が増えても答えが大きくなりすぎないようにする
+function mulFactorMax(rows) {
+  if (rows <= 2) return 9;
+  if (rows === 3) return 5;
+  if (rows === 4) return 4;
+  if (rows === 5) return 3;
+  return 2;
+}
+
+// 行数どおりの掛け算をつくる
 function makeMulRows(rows) {
   if (rows <= 2) return makeMul();
-  if (rows >= 4) return makeMul();
-  const nums = [randInt(2, 5), randInt(2, 5), randInt(2, 4)];
+  const hi = mulFactorMax(rows);
+  const lo = rows >= 6 ? 1 : 2;
+  const nums = [];
+  for (let i = 0; i < rows; i += 1) nums.push(randInt(lo, hi));
+  if (nums.every((n) => n === 1)) nums[0] = 2;
   const answer = nums.reduce((prod, n) => prod * n, 1);
   return { nums, op: "×", answer, text: nums.join(" × ") };
 }
